@@ -10,7 +10,7 @@ export default function Home() {
       <div className="bg-blue-500">
         <section className="relative h-screen">
           <div className="h-screen absolute inset-0">
-            <Image src={homeBg} alt="Rock 'N' Roll Store background" fill/>
+            <Image priority src={homeBg} alt="Rock 'N' Roll Store background" fill/>
           </div>
           <div className="relative h-full flex flex-col justify-around items-center">
             <h1 className="text-Project-red-fist font-rock text-8xl z-20 maintitle">Rock &#39;N&#39; Roll Store</h1>

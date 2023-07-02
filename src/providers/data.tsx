@@ -1,6 +1,11 @@
 'use client'
 
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+
+const SUPABASEURL = process.env.SUPABASE_URL
+const SUPABASEANONKEY = process.env.SUPABASE_ANON_KEY
 
 enum tamanhos {
     P = "Pequeno",
@@ -16,7 +21,7 @@ enum color {
 }
 
 export interface IShirts {
-    shirt: string
+    band: string
     size: tamanhos
     color: color,
     image: string,
@@ -35,43 +40,7 @@ interface IdataProductsTypes {
 
 
 const initialValue = {
-    shirts: [
-        {
-            shirt: "Slipknot",
-            size: tamanhos.G,
-            color: color.Preto,
-            image: require("~/img/slipknotShirt.png").default,
-            price: "49,99"
-        },
-        {
-            shirt: "Pearl Jam",
-            size: tamanhos.M,
-            color: color.Cinza,
-            image: require("~/img/pearlJamShirt.png").default,
-            price: "88,43"
-        },
-        {
-            shirt: "Sleep Token",
-            size: tamanhos.G,
-            color: color.Branco,
-            image: require('~/img/sleepTokenShirt.png').default,
-            price: "103,30"
-        },
-        {
-            shirt: "Guns 'N' Roses",
-            size: tamanhos.G,
-            color: color.Branco,
-            image: require("~/img/gunsNRosesShirt.png").default,
-            price: "49,99"
-        },
-        {
-            shirt: "Led Zeppelin",
-            size: tamanhos.M,
-            color: color.Cinza,
-            image: require("~/img/ledZeppelinShirt.png").default,
-            price: "88,43"
-        }
-    ],
+    shirts: [],
     setShirts: () => {},
     allBands: []
 }
@@ -82,7 +51,29 @@ export const DataProducts = createContext<IdataProductsTypes>(initialValue);
 export const DataProductsProvider = ({ children }: IdataProducts) => {
     
     const [shirts, setShirts] = useState<IShirts[]>(initialValue.shirts)
-    const [allBands, setAllBands] = useState<string[]>(initialValue.shirts.map((item) => item.shirt))
+    const [allBands, setAllBands] = useState<string[]>(initialValue.allBands)
+
+    useEffect(()=> { 
+        if (SUPABASEURL && SUPABASEANONKEY) {
+            const supabaseClient = createClient(SUPABASEURL, SUPABASEANONKEY);
+            supabaseClient
+              .from('Storage')
+              .select('Band, Shirts')
+              .then(({ data }) => {
+                const allShirts: IShirts[] = data?.reduce((acc: IShirts[], obj: { Band: string; Shirts?: IShirts[] }) => {
+                    if (obj.Shirts) {
+                      return [...acc, ...obj.Shirts];
+                    }
+                    return acc;
+                },[]) || [];
+                const dataAllbands: string[] = data?.map(band => band.Band) || []
+                setShirts(allShirts)
+                setAllBands(dataAllbands)
+                console.log(allShirts);
+                console.log(allBands)
+            });
+        }
+    },[])
     
     return(
         <DataProducts.Provider value={{shirts, setShirts, allBands}}>
