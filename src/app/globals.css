@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=New+Rocker&display=swap');
 
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .maintitle {
     text-shadow: 4px 0 #000, -4px 0 #000, 0 4px #000, 0 -4px #000,
@@ -52,8 +54,3 @@ div > * ::-webkit-scrollbar-thumb {
     border: 2px solid rgba(0, 0, 0, 0);
     background-clip: content-box;
 }
-
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

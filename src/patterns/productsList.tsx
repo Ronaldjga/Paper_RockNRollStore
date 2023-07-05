@@ -16,11 +16,11 @@ export function ProductsList() {
   },[shirts])
   
   return (
-    <div className='w-full'>
+    <>
         <div className='container mx-auto'>
           <Filters allItems={shirts} setNewItems={setCurrentItems}/>
           <Product currentItems={currentItems}/>
         </div>
-    </div>
+    </>
   )
 }

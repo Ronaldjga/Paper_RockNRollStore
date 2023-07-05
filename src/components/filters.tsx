@@ -79,8 +79,8 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
     },[searchBanda, optionBand, optionPrice])
 
   return (
-    <div className='p-2 flex gap-5 justify-center items-center bg-Project-black border-b-8 rounded-t-md border-Project-red-fist'>
-        <div className='w-2/4 p-2 gap-5 flex items-center'>
+    <div className='my-5 p-2 flex flex-wrap gap-2 justify-center items-center bg-Project-black border-b-8 rounded-t-md border-Project-red-fist'>
+        <div className='w-full gap-2 flex flex-wrap items-center'>
             <details className="w-full h-12 cursor-pointer relative bg-Project-white rounded-lg">
               <summary className="w-full h-full px-5 flex items-center justify-between flex-wrap">
                 <div>
@@ -132,7 +132,7 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
                 </div>
               </summary>
               <ul className='w-full max-h-[300px] p-2 overflow-y-auto z-50 flex flex-col gap-1 items-center absolute top-full mt-2 rounded-lg rounded-b-none text-Project-white bg-Project-black border-b-8 border-b-Project-red-fist'>
-                {allBands.map((data, key) => {
+                {allBands?.map((data, key) => {
                     const isChecked = optionBand === data ? 'bg-Project-red-fist' : ''
                     return(
                         <li
@@ -154,7 +154,7 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
               </ul>
             </details>
         </div>
-        <label className='w-2/4 h-12 pr-5 bg-Project-white rounded-lg flex justify-between gap-5'>
+        <label className='w-full h-12 pr-5 bg-Project-white rounded-lg flex justify-between gap-1'>
             <input
                 name='searchBanda'
                 className='w-full h-full bg-transparent p-5'
@@ -162,7 +162,7 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
                 onChange={(e)=> {
                 setSearchBanda(e.target.value)
             }}/>
-            <Image className='w-8 h-auto' src={searchIcon} alt='Search Icon'/>
+            <Image className='w-[40px] h-auto' src={searchIcon} alt='Search Icon'/>
         </label>
     </div>
   )
