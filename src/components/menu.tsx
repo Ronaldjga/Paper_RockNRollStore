@@ -4,7 +4,9 @@ import React, { useState } from 'react'
 import { Rubik_Wet_Paint } from 'next/font/google'
 import menuIconOpen from '~/img/menuIcon.svg'
 import menuIconClose from '~/img/closeIcon.svg'
+import backpack from '~/img/backpack.svg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const rubik_Wet_Paint = Rubik_Wet_Paint({ subsets: ['latin'] , weight: '400'})
 
@@ -33,14 +35,14 @@ export default function Menu() {
                 : 'hidden text-[0px] w-0'
                 } ${rubik_Wet_Paint.className}`}>
                 <div className={`container h-fit mx-auto grid grid-cols-2 place-items-center gap-5 justify-between items-center`}>
-                    <div className='w-8 h-8 col bg-Project-red-fist'/>
+                    <Link href={'/'}><div className='w-8 h-8 col bg-Project-red-fist'/></Link>
                     <ul className='flex flex-col col-span-2 gap-5 order-3'>
                         <li>Inicio</li>
                         <li>Produtos</li>
                         <li>Sobre</li>
                         <li>Reportar</li>
                     </ul>
-                    <div className='w-8 h-8 flex-none order-2 bg-Project-red-second'/>
+                    <Link href={'/shoppingCart'} className='w-8 h-8 flex-none order-2 relative'><Image src={backpack} alt='carrinho de compras' fill /></Link>
                 </div>
             </nav>
         </div>

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
 import homeBg from '~/img/rockstorebg.png'
-import palheta from '~/img/palheta.png'
 import { MyCarousel } from '@/components/carousel'
 
 export default function MainSection() {
