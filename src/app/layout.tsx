@@ -1,6 +1,7 @@
 import Menu from '@/components/menu'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import ProviderAuth from './providers/provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="ptBR">
       <body className={inter.className}>
-        <Menu/>
-        {children}
+        <ProviderAuth>
+          <Menu/>
+          {children}
+        </ProviderAuth>
       </body>
     </html>
   )

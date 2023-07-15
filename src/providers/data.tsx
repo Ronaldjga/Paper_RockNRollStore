@@ -69,8 +69,6 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
                 const dataAllbands: string[] = data?.map(band => band.Band) || []
                 setShirts(allShirts)
                 setAllBands(dataAllbands)
-                console.log(allShirts);
-                console.log(allBands)
             });
         }
     },[])

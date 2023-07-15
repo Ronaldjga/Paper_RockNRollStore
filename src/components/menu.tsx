@@ -7,6 +7,7 @@ import menuIconClose from '~/img/closeIcon.svg'
 import backpack from '~/img/backpack.svg'
 import Image from 'next/image'
 import Link from 'next/link'
+import UserButton from './userButton'
 
 const rubik_Wet_Paint = Rubik_Wet_Paint({ subsets: ['latin'] , weight: '400'})
 
@@ -25,7 +26,6 @@ export default function Menu() {
                 className={`${isOpen === false ? 'fixed duration-300 ease-in-out' : 'absolute duration-300 ease-in-out'} w-fit top-5 right-5 z-10`}
                 onClick={(e) => {
                     setIsOpen(!isOpen)
-                    console.log(isOpen)
                 }}
             >
                 <Image src={menuIcon} width={30} height={30} alt='Open Menu'/>
@@ -35,7 +35,7 @@ export default function Menu() {
                 : 'hidden text-[0px] w-0'
                 } ${rubik_Wet_Paint.className}`}>
                 <div className={`container h-fit mx-auto grid grid-cols-2 place-items-center gap-5 justify-between items-center`}>
-                    <Link href={'/'}><div className='w-8 h-8 col bg-Project-red-fist'/></Link>
+                    <UserButton/>
                     <ul className='flex flex-col col-span-2 gap-5 order-3'>
                         <li>Inicio</li>
                         <li>Produtos</li>
