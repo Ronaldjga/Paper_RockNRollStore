@@ -11,6 +11,12 @@ export function GithubSignIn () {
         >
             Github
         </button>
+        <button
+            className="py-2 px-5 bg-Project-red-fist"
+            onClick={() => signIn('google')}
+        >
+            Google
+        </button>
     </>
   )
 }

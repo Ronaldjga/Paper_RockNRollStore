@@ -1,20 +1,12 @@
-'use client'
-
 import { GithubSignIn } from '@/components/signIn'
-import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
-export default function Login() {
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if(session){
-      console.log('usuario ja logado')
-      redirect('/')
-    }
-    console.log(session)
-  }, [session])
+export default async function Login() {
+  const session = await getServerSession<any>(authOptions)
+  console.log(session, 'console na login page')
+  if(session) redirect("/")
 
   return (
     <main className='w-full min-h-screen bg-black flex justify-center items-center'>

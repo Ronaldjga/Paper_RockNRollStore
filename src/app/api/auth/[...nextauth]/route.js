@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google'
 import { SupabaseAdapter } from "@auth/supabase-adapter";
 import jwt from "jsonwebtoken"
 
@@ -9,6 +10,17 @@ export const authOptions = {
         GithubProvider({
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
         })
     ],
     adapter: SupabaseAdapter({
@@ -17,6 +29,7 @@ export const authOptions = {
     }),
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
+            console.log(user, 'console no callback sigin')
             if (user) {
                 return true
             }
@@ -27,13 +40,21 @@ export const authOptions = {
             else if (url.startsWith('/')) return new URL(url, baseUrl).toString()
             return baseUrl
         },
-        async session({ session, token, user }) {
-            if (token) {
-                session.id = token.id
+        async session({ session, user }) {
+            const signingSecret = process.env.SUPABASE_JWT_SECRET
+            if (signingSecret) {
+              const payload = {
+                aud: "authenticated",
+                exp: Math.floor(new Date(session.expires).getTime() / 1000),
+                sub: user.id,
+                email: user.email,
+                role: "authenticated",
+              }
+              session.supabaseAccessToken = jwt.sign(payload, signingSecret)
             }
             return session
         },
-        async jwt({ token, user, account, profile, isNewUser }) {
+        async jwt({ token, user}) {
             if (user) {
                 token.id = user.id
             }
@@ -45,11 +66,6 @@ export const authOptions = {
         signIn: "/login"
     },
     debug: true,
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60,
-        updateAge: 24 * 60 * 60,
-    }
 }
 
 const handler = NextAuth(authOptions);

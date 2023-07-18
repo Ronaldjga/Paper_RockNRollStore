@@ -1,10 +1,9 @@
-'use client'
-
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-export default function UserButton() {
-    const { data: session } = useSession()
-    console.log(session)
+export default async function UserButton() {
+    const session = await getServerSession<any>(authOptions)
 
     return (
         <>
