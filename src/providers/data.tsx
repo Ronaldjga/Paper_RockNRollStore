@@ -35,17 +35,20 @@ interface IdataProducts {
 interface IdataProductsTypes {
     shirts: IShirts[],
     setShirts: (newState : IShirts[]) => void,
-    allBands: string[]
+    allBands: string[],
+    notifications: {}[]
 }
 
 const initialValue = {
     shirts: [],
     setShirts: () => {},
-    allBands: []
+    allBands: [],
+    notifications: []
 }
 
 export const DataProducts = createContext<IdataProductsTypes>(initialValue);
 
+export const notificationsList: any = []
 
 export const DataProductsProvider = ({ children }: IdataProducts) => {
     
@@ -53,6 +56,12 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
     const [ allBands, setAllBands ] = useState<string[]>(initialValue.allBands)
     const [ userData, setUserData ] = useState<any>(null)
     const { data: session,} = useSession()
+
+    const [ notifications, setNotifications ] = useState<any>(initialValue.notifications)
+
+    useEffect(() => {
+        setNotifications(notificationsList)
+    }, [notificationsList])
 
     useEffect(()=> { 
         if (SUPABASEURL && SUPABASEANONKEY) {
@@ -84,7 +93,7 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         
         console.log(userData, 'console em data')
     return(
-        <DataProducts.Provider value={{shirts, setShirts, allBands}}>
+        <DataProducts.Provider value={{shirts, setShirts, allBands, notifications}}>
             { children }
         </DataProducts.Provider>
     );

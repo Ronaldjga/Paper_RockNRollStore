@@ -10,7 +10,7 @@ interface IAccountActions {
 }
 
 export default function AccountActions({ action, icon }: IAccountActions) {
-    console.log(action, 'console action')
+    // console.log(action, 'console action')
     return (
         <>
             {

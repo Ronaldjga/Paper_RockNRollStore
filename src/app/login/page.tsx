@@ -5,7 +5,7 @@ import { authOptions } from '../api/auth/[...nextauth]/route';
 
 export default async function Login() {
   const session = await getServerSession<any>(authOptions)
-  console.log(session, 'console na login page')
+  // console.log(session, 'console na login page')
   if(session) redirect("/")
 
   return (

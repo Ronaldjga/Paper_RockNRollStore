@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 
 export const authOptions = {
     secret: process.env.NEXTAUTHSECRET,
+    site: process.env.NEXTAUTHSITE,
     providers: [
         GithubProvider({
             clientId: process.env.GITHUB_ID,
@@ -29,7 +30,15 @@ export const authOptions = {
     }),
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log(user, 'console no callback sigin')
+            // const response = await fetch('/api/login', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: profile,
+            // });
+            // console.log(data, 'console no callback sigin')
+
             if (user) {
                 return true
             }

@@ -4,6 +4,7 @@ import ProviderAuth from './providers/provider'
 import { Menu } from '@/components/menu'
 import backpackIcon from '~/img/backpack.svg'
 import SessionAccount from '@/components/accountButton'
+import Notifications from '@/patterns/widget/notifications'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,6 +31,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
             <Menu.Links links={menuLinks}/>
             <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/carrinho'/>
           </Menu.Root>
+          {/* @ts-expect-error */}
+          <Notifications/>
           {children}
         </ProviderAuth>
       </body>

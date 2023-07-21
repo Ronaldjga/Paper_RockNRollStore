@@ -4,7 +4,7 @@ import AccountActions from './accountActions'
 
 export default async function SessionAccount() {
     const session: any = await getServerSession<any>(authOptions)
-    console.log(session, 'console no sessionAccount')
+    // console.log(session, 'console no sessionAccount')
     return (
         <>
             {
