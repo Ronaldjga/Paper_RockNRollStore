@@ -4,7 +4,7 @@ const nextConfig = {}
 require('dotenv').config();
 module.exports = {
     images: {
-        domains: ['hwarjdvqhksvkfciiene.supabase.co', 'avatars.githubusercontent.com'],
+        domains: ['hwarjdvqhksvkfciiene.supabase.co', 'avatars.githubusercontent.com', 'lh3.googleusercontent.com'],
     },
     env: {
         SUPABASE_URL: process.env.SUPABASE_URL,

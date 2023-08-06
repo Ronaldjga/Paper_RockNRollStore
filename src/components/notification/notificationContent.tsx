@@ -5,7 +5,7 @@ interface INotificationContent {
 
 export function NotificationContent({text}:INotificationContent) {
   return (
-    <p>
+    <p className="text-[0.8rem]">
         {text}
     </p>
   )

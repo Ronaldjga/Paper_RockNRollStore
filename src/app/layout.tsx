@@ -5,6 +5,8 @@ import { Menu } from '@/components/menu'
 import backpackIcon from '~/img/backpack.svg'
 import SessionAccount from '@/components/accountButton'
 import Notifications from '@/patterns/widget/notifications'
+import { DataProductsProvider } from '@/providers/data'
+import { NotificationsProvider } from '@/providers/notifications'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,17 +25,20 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 
   return (
     <html lang="ptBR">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-black`}>
         <ProviderAuth>
-          <Menu.Root>
-            {/* @ts-expect-error */}
-            <SessionAccount/>
-            <Menu.Links links={menuLinks}/>
-            <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/carrinho'/>
-          </Menu.Root>
-          {/* @ts-expect-error */}
-          <Notifications/>
-          {children}
+          <DataProductsProvider>
+            <NotificationsProvider>
+              <Menu.Root>
+                {/* @ts-expect-error */}
+                <SessionAccount/>
+                <Menu.Links links={menuLinks}/>
+                <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/carrinho'/>
+              </Menu.Root>
+              <Notifications/>
+              {children}
+            </NotificationsProvider>
+          </DataProductsProvider>
         </ProviderAuth>
       </body>
     </html>

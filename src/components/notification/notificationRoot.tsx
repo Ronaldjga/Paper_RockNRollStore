@@ -1,12 +1,16 @@
 import { ReactNode } from 'react'
 
 interface INotificationRoot {
-    children: ReactNode
+  children: ReactNode,
+  className?: string
+  type: string
 }
 
-export default function NotificationRoot({ children } : INotificationRoot) {
+export default function NotificationRoot({ children, className, type } : INotificationRoot) {
+  const bgColorType = type === 'Error' ? 'bg-red-300 border-2 border-red-500' : 'bg-emerald-200 border-2 border-green-500'
+
   return (
-    <div className='bg-zinc-200 px-8 py-4 flex items-start gap-6'>
+    <div className={`${bgColorType} px-4 py-2 flex items-start gap-2 rounded ${className}`}>
         {children}
     </div>
   )

@@ -54,3 +54,18 @@ div > * ::-webkit-scrollbar-thumb {
     border: 2px solid rgba(0, 0, 0, 0);
     background-clip: content-box;
 }
+
+.notification {
+    animation: notificationAnimation 0.3s ease-in-out;
+}
+
+@keyframes notificationAnimation {
+    0% {
+        transform: translateY(100%); /* Inicia a notificação 100% abaixo do container */
+        opacity: 0; /* Começa completamente transparente */
+    }
+    100% {
+    transform: translateY(0); /* Finaliza com a notificação na posição original (0) */
+    opacity: 1; /* Chega a 100% de opacidade, totalmente visível */
+    }
+}

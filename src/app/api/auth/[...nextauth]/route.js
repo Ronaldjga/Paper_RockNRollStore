@@ -30,19 +30,11 @@ export const authOptions = {
     }),
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            // const response = await fetch('/api/login', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: profile,
-            // });
-            // console.log(data, 'console no callback sigin')
-
             if (user) {
                 return true
+            } else {
+                return false
             }
-            return false
         },
         async redirect({ url, baseUrl }) {
             if (url.startsWith(baseUrl)) return url
@@ -54,6 +46,7 @@ export const authOptions = {
             if (signingSecret) {
               const payload = {
                 aud: "authenticated",
+                iat: Math.floor(Date.now() / 1000) - 30,
                 exp: Math.floor(new Date(session.expires).getTime() / 1000),
                 sub: user.id,
                 email: user.email,
@@ -72,7 +65,8 @@ export const authOptions = {
         },
     },
     pages: {
-        signIn: "/login"
+        signIn: "/login",
+        error: "/login"
     },
     debug: true,
 }

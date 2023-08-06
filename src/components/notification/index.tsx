@@ -1,4 +1,5 @@
 import { NotificationActionCancel, NotificationActionSubmit, NotificationActions } from "./notificationActions";
+import { NotificationContent } from "./notificationContent";
 import { NotificationIcon } from "./notificationIcon";
 import NotificationRoot from "./notificationRoot";
 
@@ -7,5 +8,6 @@ export const Notification = {
     Actions: NotificationActions,
     ActionsCancel: NotificationActionCancel,
     ActionsSubmit: NotificationActionSubmit,
-    Icon: NotificationIcon
+    Icon: NotificationIcon,
+    Content: NotificationContent
 }

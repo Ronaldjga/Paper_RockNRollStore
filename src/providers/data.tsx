@@ -3,6 +3,7 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSession } from "next-auth/react";
+import { SUPABASE } from "../../utils/supabase";
 
 const SUPABASEURL = process.env.SUPABASE_URL
 const SUPABASEANONKEY = process.env.SUPABASE_ANON_KEY
@@ -36,64 +37,67 @@ interface IdataProductsTypes {
     shirts: IShirts[],
     setShirts: (newState : IShirts[]) => void,
     allBands: string[],
-    notifications: {}[]
 }
 
 const initialValue = {
     shirts: [],
     setShirts: () => {},
     allBands: [],
-    notifications: []
 }
 
 export const DataProducts = createContext<IdataProductsTypes>(initialValue);
-
-export const notificationsList: any = []
 
 export const DataProductsProvider = ({ children }: IdataProducts) => {
     
     const [ shirts, setShirts ] = useState<IShirts[]>(initialValue.shirts)
     const [ allBands, setAllBands ] = useState<string[]>(initialValue.allBands)
     const [ userData, setUserData ] = useState<any>(null)
-    const { data: session,} = useSession()
+    const { data: session, status} = useSession()
 
-    const [ notifications, setNotifications ] = useState<any>(initialValue.notifications)
-
-    useEffect(() => {
-        setNotifications(notificationsList)
-    }, [notificationsList])
+    async function testeReq () {
+        const req = await fetch("/api/login", {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        const res = await req.json()
+        console.log(res, 'console da requiisição')
+    }
 
     useEffect(()=> { 
-        if (SUPABASEURL && SUPABASEANONKEY) {
-            const supabaseClient = createClient(SUPABASEURL, SUPABASEANONKEY);
-            supabaseClient
-              .from('Storage')
-              .select('Band, Shirts')
-              .then(({ data }) => {
-                const allShirts: IShirts[] = data?.reduce((acc: IShirts[], obj: { Band: string; Shirts?: IShirts[] }) => {
-                    if (obj.Shirts) {
-                      return [...acc, ...obj.Shirts];
-                    }
-                    return acc;
-                },[]) || [];
-                const dataAllbands: string[] = data?.map(band => band.Band) || []
-                setShirts(allShirts)
-                setAllBands(dataAllbands)
-            });
-        }
-        if(session && SUPABASEURL && SUPABASEANONKEY ){
-            const { supabaseAccessToken }: any = session;
-            const supabaseClient = createClient(SUPABASEURL, SUPABASEANONKEY, {global: {headers: {Authorization: `Bearer ${supabaseAccessToken}`}}})
-            supabaseClient
-                .from('users')
-                .select('*')
-                .then(({data}) => setUserData(data))
+            if (SUPABASEURL && SUPABASEANONKEY) {
+                const supabaseClient = createClient(SUPABASEURL, SUPABASEANONKEY);
+                supabaseClient
+                .from('Storage')
+                .select('Band, Shirts')
+                .then(({ data }) => {
+                    const allShirts: IShirts[] = data?.reduce((acc: IShirts[], obj: { Band: string; Shirts?: IShirts[] }) => {
+                        if (obj.Shirts) {
+                        return [...acc, ...obj.Shirts];
+                        }
+                        return acc;
+                    },[]) || [];
+                    const dataAllbands: string[] = data?.map(band => band.Band) || []
+                    setShirts(allShirts)
+                    setAllBands(dataAllbands)
+                });
             }
-        },[session])
+            if(session != undefined && status === 'authenticated') {
+                testeReq()
+                // console.log(status)
+                // const { supabaseAccessToken }: any = session
+                // if(supabaseAccessToken) {
+                //   SUPABASE(supabaseAccessToken)
+                //   .from('users')
+                //   .select('*')
+                //   .then(({data})=> console.log(data, 'console no dataaaaaaaaaaa'))
+                // }
+            }
+        },[session, status])
         
-        console.log(userData, 'console em data')
+        // console.log(userData, 'console em data')
     return(
-        <DataProducts.Provider value={{shirts, setShirts, allBands, notifications}}>
+        <DataProducts.Provider value={{shirts, setShirts, allBands}}>
             { children }
         </DataProducts.Provider>
     );
