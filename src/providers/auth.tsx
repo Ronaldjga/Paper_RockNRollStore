@@ -4,11 +4,11 @@ import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
 
 
-interface IProviderAuth {
+interface IAuthProvider {
     children: ReactNode
 }
 
-export default function ProviderAuth({children}:IProviderAuth) {
+export default function AuthProvider({children}:IAuthProvider) {
   return (
     <SessionProvider>
         {children}

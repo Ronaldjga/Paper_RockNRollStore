@@ -1,10 +1,10 @@
 'use client'
 
-import { Product } from '@/components/product'
 import { UseDataProducts } from '@/providers/data'
 import React, { useEffect, useState } from 'react'
 import { IShirts } from '@/providers/data'
 import { Filters } from '@/components/filters'
+import { ProductsGrid } from './products/productsGrid'
 
 export function ProductsList() {
   const { shirts } = UseDataProducts()
@@ -19,7 +19,7 @@ export function ProductsList() {
     <>
         <div className='container mx-auto'>
           <Filters allItems={shirts} setNewItems={setCurrentItems}/>
-          <Product currentItems={currentItems}/>
+          {currentItems.length && (<ProductsGrid products={currentItems}/>)}
         </div>
     </>
   )

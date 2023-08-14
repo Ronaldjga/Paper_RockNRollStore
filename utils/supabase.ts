@@ -5,8 +5,10 @@ const SUPABASEANONKEY = process.env.SUPABASE_ANON_KEY ?? ''
 
 export const SUPABASE = (userToken?:string) => {
     if(userToken) {
-        return createClient(SUPABASEURL, SUPABASEANONKEY, {global: {headers: {Authorization: `Bearer ${userToken}`}}})
+        const client = createClient(SUPABASEURL, SUPABASEANONKEY, {global: {headers: {Authorization: `Bearer ${userToken}`}}})
+        return client
     } else {
-        return createClient(SUPABASEURL, SUPABASEANONKEY)
+        const client = createClient(SUPABASEURL, SUPABASEANONKEY)
+        return client
     }
 }

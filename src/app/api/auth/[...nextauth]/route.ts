@@ -3,18 +3,19 @@ import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google'
 import { SupabaseAdapter } from "@auth/supabase-adapter";
 import jwt from "jsonwebtoken"
+import type { NextAuthOptions } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 
-export const authOptions = {
+export const authOptions : NextAuthOptions = {
     secret: process.env.NEXTAUTHSECRET,
-    site: process.env.NEXTAUTHSITE,
     providers: [
         GithubProvider({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET
+            clientId: process.env.GITHUB_ID ?? '',
+            clientSecret: process.env.GITHUB_SECRET ?? ''
         }),
         GoogleProvider({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_SECRET,
+            clientId: process.env.GOOGLE_ID ?? '',
+            clientSecret: process.env.GOOGLE_SECRET ?? '',
             authorization: {
                 params: {
                     prompt: "consent",
@@ -25,9 +26,9 @@ export const authOptions = {
         })
     ],
     adapter: SupabaseAdapter({
-        url: process.env.SUPABASE_URL,
-        secret: process.env.SUPABASE_SECRET
-    }),
+        url: process.env.SUPABASE_URL ?? '',
+        secret: process.env.SUPABASE_SECRET ?? ''
+    }) as Adapter,
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
             if (user) {
@@ -66,7 +67,6 @@ export const authOptions = {
     },
     pages: {
         signIn: "/login",
-        error: "/login"
     },
     debug: true,
 }

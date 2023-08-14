@@ -1,41 +1,13 @@
 'use client'
 
-import React, { useEffect } from 'react'
 import Image from "next/image";
 import shirt1 from "~/img/gunsNRosesShirt.png"
 import shirt2 from "~/img/ledZeppelinShirt.png"
 import shirt3 from "~/img/pearlJamShirt.png"
 import { Carousel } from "@material-tailwind/react"
 import seta from '~/img/redArrow.svg'
-import { SUPABASE } from '../../utils/supabase';
-import { useSession } from 'next-auth/react';
-import { createClient } from '@supabase/supabase-js';
-
-const SUPABASEURL = process.env.SUPABASE_URL ?? ''
-const SUPABASEANONKEY = process.env.SUPABASE_ANON_KEY ?? ''
 
 export function MyCarousel() {
-  const { data: session, status} = useSession()
-
-  async function getUserData(){
-    if(session != undefined && status === 'authenticated') {
-      console.log(status)
-      const { supabaseAccessToken }: any = session
-      if(supabaseAccessToken != null && supabaseAccessToken != undefined) {
-        const SUPABASECLIENT = createClient(SUPABASEURL, SUPABASEANONKEY, {global: {headers: {Authorization: `Bearer ${supabaseAccessToken}`}}})
-        await SUPABASECLIENT
-        .from('users')
-        .select('*')
-        .then(({data})=> console.log(data, 'console no componenteeeeeeeeeeaeeeeaaaeee'))
-      }
-    }
-  }
-
-  useEffect(()=> {
-    getUserData()
-    console.log(session)
-  },[session, status])
-
 
   return (
     <>

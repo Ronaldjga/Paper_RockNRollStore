@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function ShoppingCart() {
   return (
-    <div>ShoppingCarts</div>
+    <main className='text-white'>
+      ShoppingCarts
+    </main>
   )
 }
