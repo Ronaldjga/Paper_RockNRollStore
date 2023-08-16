@@ -8,8 +8,8 @@ interface IProductAction {
 
 export function ProductAtion({ action, icon, className }: IProductAction) {
   return (
-    <div className={`${className} relative default:w-8 default:h-8`} onClick={action}>
+    <button className={`${className} relative default:w-8 default:h-8`} onClick={action}>
         <Image src={icon} fill alt="icon"/>
-    </div>
+    </button>
   )
 }

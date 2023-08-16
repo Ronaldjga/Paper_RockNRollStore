@@ -2,6 +2,7 @@
 
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { SUPABASE } from "../../utils/supabase";
 
 enum tamanhos {
     P = "Pequeno",
@@ -17,6 +18,7 @@ enum color {
 }
 
 export interface IShirts {
+    id: string,
     band: string
     size: tamanhos
     color: color,
@@ -25,32 +27,50 @@ export interface IShirts {
 }
 
 interface IUserData {
-    cart: [],
+    cart: ICart[],
+    wishlist: IWishlist[],
     email: string,
     id: string,
     image: string,
     name: string,
-    wishlist: string
 }
 
 interface IdataProducts {
     children: ReactNode
 }
 
-interface IdataProductsTypes {
-    shirts: IShirts[],
-    setShirts: (newState : IShirts[]) => void,
-    allBands: string[],
-    userData: IUserData[],
-    setUserData: (newState : IUserData[]) => void
+export interface ICart {
+    product: IShirts,
+    quatity: number | string
 }
 
-const initialValue = {
+export interface IWishlist {
+    product: IShirts,
+    quatity?: number | string
+}
+
+interface IdataProductsTypes {
+    shirts: IShirts[],
+    cart: ICart[],
+    setCart: (newState: ICart[]) => void,
+    wishlist: IWishlist[],
+    setWishlist: (newState: IWishlist[]) => void,
+    setShirts: (newState : IShirts[]) => void,
+    allBands: string[],
+    userData: IUserData,
+    setUserData: (newState : IUserData) => void
+}
+
+const initialValue: IdataProductsTypes = {
     shirts: [],
-    setShirts: () => {},
+    cart: [],
+    wishlist: [],
     allBands: [],
-    userData: [],
-    setUserData: () => {}
+    userData: {cart: [], wishlist: [], email: '', id: '', image: '', name: ''},
+    setShirts: () => {},
+    setUserData: () => {},
+    setCart: () => {},
+    setWishlist: () => {}
 }
 
 export const DataProducts = createContext<IdataProductsTypes>(initialValue);
@@ -59,14 +79,30 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
     
     const [ shirts, setShirts ] = useState<IShirts[]>(initialValue.shirts)
     const [ allBands, setAllBands ] = useState<string[]>(initialValue.allBands)
-    const [ userData, setUserData ] = useState<IUserData[]>(initialValue.userData)
+    const [ userData, setUserData ] = useState<IUserData>(initialValue.userData)
+    const [ cart, setCart ] = useState<ICart[]>(initialValue.cart)
+    const [ wishlist, setWishlist ] = useState<IWishlist[]>(initialValue.wishlist)
     const { data: session} = useSession()
 
     async function reqUserData () {
         const req = await fetch("/api/userdata");
-        const res = await req.json()
-        setUserData(res)
+        const res: IUserData[] = await req.json()
+        setUserData(res[0])
+        setCart(res[0].cart)
+        setWishlist(res[0].wishlist)
         console.log(res, 'console da requiisição')
+    }
+
+    async function updateWhisilist(data: IWishlist[]) {
+        const req = await fetch("/api/update", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+        const res = await req.json()
+        console.log(res, 'REQUISIÇÃOoooooooooooooooooo POST')
     }
 
     async function reqStorage() {
@@ -81,7 +117,24 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         const dataAllbands: string[] = res?.map((band : { Band : string }) => band.Band) || []
         setShirts(allShirts)
         setAllBands(dataAllbands)
+        console.log(res, 'console do Storage')
     }
+
+    useEffect(()=> {
+        const channel = SUPABASE().channel('realtime userData')
+        .on("postgres_changes", {
+            event: "UPDATE",
+            schema: "public",
+            table: "users"
+        }, 
+        (payload) => {
+            console.log({payload}, 'REAAAAALLLLTIME')
+        }).subscribe()
+
+        return () => {
+            SUPABASE().removeChannel(channel)
+        }
+    }, [])
 
     useEffect(() => {
         reqStorage()
@@ -92,9 +145,15 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
             reqUserData()
         }
     },[session])
+
+    useEffect(()=> {
+        if(userData.wishlist != wishlist && wishlist.length != 0){
+            updateWhisilist(wishlist)
+        }
+    },[wishlist])
         
     return(
-        <DataProducts.Provider value={{shirts, setShirts, allBands, userData, setUserData}}>
+        <DataProducts.Provider value={{shirts, setShirts, allBands, userData, setUserData, cart, setCart, wishlist, setWishlist}}>
             { children }
         </DataProducts.Provider>
     );
