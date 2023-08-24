@@ -43,7 +43,7 @@ export const NotificationsProvider = ({ children }: INotificationsProvider) => {
       default: "Unable to sign in.",
     };
     async function newNotification(notification: INotification) {
-        const errorMessage = notification.type === "Error" ? (errorsList[notification.content] ?? errorsList.default) : null;
+        const errorMessage = notification.type === "Error" ? (errorsList[notification.content] ?? notification.content) : null;
         const content = errorMessage ?? notification.content
             setNotificationsList(prevList => [...prevList, {type: notification.type , content: content}])
             setTimeout(() => {

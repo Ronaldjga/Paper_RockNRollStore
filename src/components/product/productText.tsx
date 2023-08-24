@@ -1,7 +1,7 @@
 import { ElementType } from "react"
 
 interface IProductText {
-  text: string,
+  text: string | number,
   Tag: ElementType,
   className?: string
 } 

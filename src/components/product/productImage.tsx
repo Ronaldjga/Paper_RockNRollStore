@@ -5,12 +5,13 @@ interface IProductImage {
     imageClassName?: string,
     rootClassName?: string,
     imageSize?: string,
-    alt: string
+    alt: string,
+    action?: () => void
 }
 
-export function ProductImage({ image, rootClassName, imageClassName, imageSize, alt } : IProductImage) {
+export function ProductImage({ image, rootClassName, imageClassName, imageSize, alt, action } : IProductImage) {
   return (
-    <div className={`${rootClassName} relative`}>
+    <div onClick={action} className={`${rootClassName} relative`}>
       <Image className={imageClassName} placeholder="empty" src={image}  sizes={imageSize} fill alt={alt}/>
     </div>
   )
