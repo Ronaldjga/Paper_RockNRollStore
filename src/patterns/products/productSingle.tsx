@@ -1,6 +1,6 @@
 'use client'
 
-import { IShirts, UseDataProducts } from "@/providers/data"
+import { ICart, IShirts, UseDataProducts } from "@/providers/data"
 import { useEffect, useState } from "react"
 import { Product } from "@/components/product/index"
 import { moneyFomat, totalCalculationOneProduct } from "../../../utils/operations"
@@ -20,6 +20,20 @@ export default function ProductSingle({ id } : { id: string } ) {
   const [productColor, setProductColor] = useState<string | null>(null)
   const [quantity, setQuantity] = useState<number>(1)
   const [productTotalPrice, setProductTotalPrice] = useState<string>('0')
+  const [newProduct, setNewProduct] = useState<ICart>({
+    id: '',
+    band: '',
+    size: '',
+    color: '',
+    image: '',
+    price: '',
+    quantity: 1,
+    totalPrice: ''
+  })
+
+  function editNewProduct(prop:string, value: string | number) {
+    setNewProduct(newState => ({...newState, [prop]: value}))
+  }
 
   useEffect(()=> {
     if(productSingle) {
@@ -33,12 +47,23 @@ export default function ProductSingle({ id } : { id: string } ) {
     setProductTotalPrice(moneyFomat(idProductPage(id, shirts)?.price ?? '0'))
   }, [shirts])
   
+  useEffect(()=> {
+    if(productSingle != null){
+      editNewProduct('id', id)
+      editNewProduct('image', productSingle.image)
+      editNewProduct('band', productSingle.band)
+      editNewProduct('price', productSingle.price)
+    }
+  },[productSingle])
+  
+  console.log(newProduct)
+
   return (
     <main className="w-11/12 bg-Project-black rounded-md p-2">
       {
         productSingle === null ? (<p>... Carregando</p>) 
         : (
-          <Product.Root>
+          <Product.Root className="flex-col gap-5">
             <Product.Image rootClassName="w-full pb-[100%]" image={productSingle.image} alt={productSingle.band} imageClassName="drop-shadow-2xl" imageSize="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"/>
             <Product.Content className="w-full p-2 border-t-4 border-Project-black flex flex-col flex-wrap justify-between gap-2">
                             <div className="text-center">
@@ -48,7 +73,6 @@ export default function ProductSingle({ id } : { id: string } ) {
                             <div>
                               <Product.Text className="font-bold" Tag={"h4"} text="Tamanhos:"/>
                               <InputRadio hookState={productSize} hookSetState={setProductSize} items={Object.keys(productSingle.size)} name="sizes"/>
-                              
                             </div>
                             <div>
                               <Product.Text className="font-bold" Tag={"h4"} text="Cor:"/>
@@ -56,7 +80,7 @@ export default function ProductSingle({ id } : { id: string } ) {
                             </div>
                             <div>
                               <Product.Text className="font-bold" Tag={"h4"} text="Quantidade:"/>
-                              <Count hookState={quantity} hookSetState={setQuantity}/>
+                              <Count product={newProduct} setProduct={setNewProduct}/>
                             </div>
                             <Product.Text Tag={"h4"} className="text-[1.5rem] font-bold text-center" text={`Total: ${productTotalPrice}`}/>
                             <Product.Actions className="flex gap-2 justify-around items-center">
@@ -64,11 +88,11 @@ export default function ProductSingle({ id } : { id: string } ) {
                                   className="w-7 h-7" 
                                   icon={wishlistButtonIcon(productSingle, wishlist)} 
                                   action={()=> {
-                                    if(wishlist.find(item => item.product.id === productSingle.id)){
-                                      const delItem = wishlist.filter(item => item.product.id != productSingle.id)
+                                    if(wishlist.find(item => item.id === productSingle.id)){
+                                      const delItem = wishlist.filter(item => item.id != productSingle.id)
                                       setWishlist(delItem)
                                     } else {
-                                        setWishlist([...wishlist, {product: productSingle, quatity: 1}])
+                                        setWishlist([...wishlist, productSingle])
                                     }
                                   }}
                               />
@@ -76,25 +100,15 @@ export default function ProductSingle({ id } : { id: string } ) {
                                   className="w-full h-auto bg-Project-black bg-opacity-60 text-black font-bold" 
                                   text="Adicionar ao carrinho"
                                   action={()=> {
-                                    const newItem = {
-                                      id: productSingle.id,
-                                      band: productSingle.band,
-                                      size: productSize ?? '',
-                                      color: productColor ?? '',
-                                      image: productSingle.image,
-                                      price: productSingle.price,
-                                      quantity: quantity,
-                                      totalPrice: (quantity * parseFloat(productSingle.price)).toString()
-                                    }
-                                    if(Object.values(newItem).some(value => value === '' || value === undefined || value === 0 || value === null)) {
-                                      const emptyProperties = Object.entries(newItem).filter(value => value[1]  === '' || value[1] === undefined || value[1] === 0 || value[1] === null)
+                                    if(Object.values(newProduct).some(value => value === '' || value === undefined || value === 0 || value === null)) {
+                                      const emptyProperties = Object.entries(newProduct).filter(value => value[1]  === '' || value[1] === undefined || value[1] === 0 || value[1] === null)
                                       emptyProperties.map(item => newNotification({type: "Error", content: `Selecione o valor de ${item[0]}`}))
                                     } else{
                                       console.log('passou aqui')
                                       addToCart({
                                         cart: cart,
                                         setCart: setCart,
-                                        newItem: newItem
+                                        newItem: newProduct
                                       })
                                     }
                                   }}

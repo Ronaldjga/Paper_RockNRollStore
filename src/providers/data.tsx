@@ -28,7 +28,7 @@ export interface IShirts {
 
 interface IUserData {
     cart: ICart[],
-    wishlist: IWishlist[],
+    wishlist: IShirts[],
     email: string,
     id: string,
     image: string,
@@ -50,17 +50,12 @@ export interface ICart {
     totalPrice: string
 }
 
-export interface IWishlist {
-    product: IShirts,
-    quatity?: number | string
-}
-
 interface IdataProductsTypes {
     shirts: IShirts[],
     cart: ICart[],
     setCart: (newState: ICart[]) => void,
-    wishlist: IWishlist[],
-    setWishlist: (newState: IWishlist[]) => void,
+    wishlist: IShirts[],
+    setWishlist: (newState: IShirts[]) => void,
     setShirts: (newState : IShirts[]) => void,
     allBands: string[],
     userData: IUserData,
@@ -87,7 +82,7 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
     const [ allBands, setAllBands ] = useState<string[]>(initialValue.allBands)
     const [ userData, setUserData ] = useState<IUserData>(initialValue.userData)
     const [ cart, setCart ] = useState<ICart[]>(initialValue.cart)
-    const [ wishlist, setWishlist ] = useState<IWishlist[]>(initialValue.wishlist)
+    const [ wishlist, setWishlist ] = useState<IShirts[]>(initialValue.wishlist)
     const { data: session} = useSession()
 
     async function reqUserData () {
@@ -99,7 +94,7 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         console.log(res, 'console da requiisição')
     }
 
-    async function updateDb(data: IWishlist[] | ICart[], update: string) {
+    async function updateDb(data: IShirts[] | ICart[], update: string) {
         const propertie = {[update]: data}
         console.log(propertie)
         const req = await fetch("/api/update", {

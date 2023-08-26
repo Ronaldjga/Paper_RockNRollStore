@@ -6,7 +6,7 @@ import { IShirts } from '@/providers/data'
 import { Filters } from '@/components/filters'
 import { ProductsGrid } from './products/productsGrid'
 
-export function ProductsList() {
+export function ProductsListDois() {
   const { shirts } = UseDataProducts()
   
   const [currentItems, setCurrentItems] = useState<IShirts[]>([])

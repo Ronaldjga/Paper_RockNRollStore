@@ -1,9 +1,10 @@
-import React from 'react'
+import ProductsList from "@/patterns/products/productsList";
+
 
 export default function ShoppingCart() {
   return (
-    <main className='text-white'>
-      ShoppingCarts
+    <main>
+      <ProductsList/>
     </main>
   )
 }

@@ -1,4 +1,4 @@
-import { ProductsList } from "@/patterns/productsList";
+import { ProductsListDois } from "@/patterns/productsList";
 import MainSection from "@/patterns/mainSection/mainSection";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
         <MainSection/>
       </section>
       <section className="relative bg-black p-2">
-        <ProductsList/>
+        <ProductsListDois/>
       </section>
     </div>
   )
