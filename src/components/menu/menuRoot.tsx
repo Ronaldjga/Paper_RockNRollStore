@@ -16,8 +16,8 @@ export default function MenuRoot({children}: IMenuRoot) {
     return (
         <div style={{}} className={`${isOpen === false 
             ? 'fixed w-0 h-full ' 
-            : 'w-5/6 h-full flex flex-col py-2 px-5 fixed border-r-4 shadow-[0px_0px_21px_0px_rgba(242,15,56,1)] shadow-Project-red-fist'}
-            bg-Project-black border-Project-red-fist text-Project-red-fist top-0 left-0 z-10 transition-all duration-300 ease-in-out
+            : 'w-5/6 h-full flex flex-col py-2 px-5 fixed border-r-4 shadow-[0px_0px_21px_0px_rgba(242,15,56,1)] shadow-project-primary-500'}
+            bg-project-secondary-900 border-project-primary-500 text-project-quaternary-500 top-0 left-0 z-10 transition-all duration-300 ease-in-out
             `}
         >
             <button

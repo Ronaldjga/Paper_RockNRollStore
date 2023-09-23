@@ -1,19 +1,65 @@
 import Image from "next/image"
+import { ComponentProps } from "react"
+import { tv } from "tailwind-variants"
 
-interface IProductAction {
-    action: () => void,
-    icon?: string,
-    text?: string
-    className?: string
+const productAction = tv({
+  base: 'relative w-8 h-8',
+  variants: {
+      type: {
+          text: 'flex gap-2 justify-around items-center rounded-md p-2',
+          icon: 'w-8 h-8 min-w-[32px] min-h-[32px]'
+      }
+  },
+  defaultVariants: {
+    type: "text"
+  }
+})
+
+interface ICommonProps {
+  action: () => void,
+  className?: string,
+  buttonProps?: ComponentProps<'button'>
 }
 
-export function ProductAction({ action, icon, text, className }: IProductAction) {
-  return (
-    <button className={`${className} ${text ? 'flex gap-2 p-2 justify-around items-center rounded-md' : ''} relative default:w-8 default:h-8`} onClick={action}>
-      {
-        text ? (<><span>{text}</span> {icon && (<Image className="w-7" src={icon} alt="icon"/>)}</>) 
-        : (icon && <Image src={icon} fill alt="icon"/>)
-      }
+interface IProductIcon extends ICommonProps {
+  kind: 'icon',
+  icon: string
+}
+
+interface IProductText extends ICommonProps {
+  kind: 'text',
+  text: string,
+  icon?: string
+}
+
+type TProductAction = | IProductIcon | IProductText
+
+export function ProductAction({className, ...props}: TProductAction) {
+  if (props.kind === "icon") {
+    return (
+      <button 
+        className={productAction({type: props.kind, className: className})} 
+        onClick={props.action}
+        {...props.buttonProps}
+      >
+        <Image className="object-contain" src={props.icon} fill alt="icon"/>
+      </button>
+    );
+  }
+  if (props.kind === "text") {
+    return (
+      <button 
+      className={productAction({type: props.kind, className: className})} 
+      onClick={props.action}
+      {...props.buttonProps}
+    >
+      <span>{props.text}</span> 
+      {props.icon && (<Image className="w-7" src={props.icon} alt="icon"/>)}
     </button>
+    );
+  }
+
+  return(
+    <></>
   )
 }

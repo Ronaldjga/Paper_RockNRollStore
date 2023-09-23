@@ -1,47 +1,76 @@
 'use client'
 
-import { ICart, IShirts } from "@/providers/data"
-import { useEffect, useState } from "react"
+import { ICart, UseDataProducts } from "@/providers/data"
+import { ComponentProps, useEffect, useState } from "react"
+import { totalCalculationOneProduct } from "../../../../utils/operations"
+import { tv, VariantProps } from 'tailwind-variants'
 
-interface ICount {
-    setProduct: (newState: any) => void
+const count = tv({
+    base: 'flex gap-2 justify-center flex-wrap'
+})
+
+const button = tv({
+    base: 'w-10 h-10 border-2 flex justify-center items-center font-bold text-[1.2rem] active:bg-project-primary-500 rounded-md text-center',
+    variants: {
+        color: {
+            black: 'bg-project-secondary-500 text-project-tertiary-500',
+            white: 'bg-project-tertiary-500 text-project-secondary-500'
+        }
+    },
+    defaultVariants: {
+        color: "white"
+    }
+})
+
+interface ICount extends VariantProps<typeof count>, ComponentProps<'div'> {
+    setProduct?: (newState: ICart) => void
     product: ICart,
-    fromList?: ICart[]
-    buttonClassname?: string,
-    className?: string
+    buttonClassName?: string,
+    color?: 'white' | 'black'
 }
 
-export default function Count({product, setProduct, buttonClassname, className, fromList}: ICount) {
-    const [quantity, setQuantity] = useState<number>(1)
-    console.log(typeof product, typeof setProduct)
+type ICountButton = ComponentProps<'button'> & VariantProps<typeof button> & {
+    value: string,
+    setQuantity: (newState: any) => void,
+    quantity: number,
+    color?: 'white' | 'black'
+}
 
-    useEffect(()=> {
-        if(fromList) {
-            const updateQuantity = fromList.map(item => {
-                if(item.id === product.id){
-                    return {...item, quantity: quantity}
-                }
-                return item
-            })
+export default function Count({product, setProduct, buttonClassName, className, color}: ICount) {
+    const [quantity, setQuantity] = useState<number>(1)
+    const {cart ,setCart} = UseDataProducts()
+
+    function newQuantity(newQuantity: number){
+        if(setProduct){
+            const updateQuantity = {...product, quantity: newQuantity, totalPrice: totalCalculationOneProduct(quantity, product.price).toString()}
             setProduct(updateQuantity)
         } else {
-            const updateQuantity = {...product, quantity: quantity}
-            setProduct(updateQuantity)
+            const newCart = cart.map(value =>value != product ? value : {...value, quantity: newQuantity})
+            setCart(newCart)
         }
-    },[quantity])
+    }
     
     useEffect(()=> {
         if(product){
             setQuantity(product.quantity)
         }
-    },[])
+    },[product.quantity])
 
     return (
-        <div className={`flex gap-2 justify-center flex-wrap ${className}`}>
-            <CountButton className={buttonClassname} setQuantity={setQuantity} quantity={quantity} value="-"/>
+        <div className={count({color, className})}>
+            <CountButton 
+                className={buttonClassName}
+                color={color}
+                setQuantity={setQuantity}
+                quantity={quantity} value="-"
+                onClick={(e)=> {
+                    setQuantity(newState => newState + 1)
+                    newQuantity(quantity - 1)
+                }}
+            />
             <input 
                 type="text" 
-                className={`w-10 h-10 text-center border-2 rounded-md ${buttonClassname}`} value={quantity}
+                className={button({ color, className: buttonClassName })} value={quantity}
                 onChange={(e) => {
                     const inputValue = e.target.value
                     const numericValue = inputValue.replace(/[^0-9.-]/g, '');
@@ -49,25 +78,35 @@ export default function Count({product, setProduct, buttonClassname, className, 
                     if(numericValue !== '' && numericValue !== '-') {
                         const parsedValue = parseFloat(numericValue)
                         if(!isNaN(parsedValue)){
-                            setQuantity(parsedValue)
+                            newQuantity(parsedValue)
                         }
                     } else {
-                        setQuantity(1)
+                        newQuantity(1)
                     }
                 }}
             />
-            <CountButton className={buttonClassname} setQuantity={setQuantity} quantity={quantity} value="+"/>
+            <CountButton
+                className={buttonClassName}
+                color={color}
+                setQuantity={setQuantity}
+                quantity={quantity}
+                value="+"
+                onClick={(e)=> {
+                    setQuantity(newState => newState + 1)
+                    newQuantity(quantity + 1)
+                }}
+            />
         </div>
     )
 }
 
-function CountButton({value, setQuantity, quantity, className} : { value: string, setQuantity: (newState: any) => void, quantity: number, className?: string }) {
+function CountButton({value, setQuantity, quantity, className, color, ...props} : ICountButton) {
     const disabled = quantity === 1 && value === '-' ? true : false
     return (
         <button
             disabled={disabled}
-            className={`w-8 h-10 border-2 flex justify-center items-center font-bold text-[1.2rem] active:bg-Project-red-fist rounded-md ${className}`}
-            onClick={(e) => { setQuantity((newState : number) => value === '+' ? newState + 1 : newState - 1) }}
+            className={button({color, className})}
+            {...props}
         >
             {value}
         </button>

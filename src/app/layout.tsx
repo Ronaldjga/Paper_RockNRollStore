@@ -25,7 +25,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 
   return (
     <html lang="ptBR">
-      <body className={`${inter.className} bg-black`}>
+      <body className={`${inter.className} bg-project-secondary-900`}>
         <AuthProvider>
           <DataProductsProvider>
             <NotificationsProvider>

@@ -2,7 +2,7 @@ import { ICart } from "@/providers/data";
 
 interface IAddToCart {
     cart: ICart[],
-    setCart?: (newCart: ICart[]) => void,
+    setCart: (newCart: ICart[]) => void,
     newItem: {
         id: string,
         band: string,
@@ -21,11 +21,17 @@ export function addToCart({cart, setCart, newItem}: IAddToCart){
     console.log(newItem)
 
     if(cart.find((item) => JSON.stringify(item) === JSON.stringify(product))){
-        console.log('iguallllllllllllllllllllllllllll')
+        console.log('aqui 1')
+        return
+    } else if(cart.find((item) => item.id === product.id && item.color === product.color && item.size === product.size && item.quantity != product.quantity)){
+        const updateCart = cart.map((item) => item.id === product.id && item.color === product.color && item.size === product.size && item.quantity != product.quantity ? product : item)
+        setCart(updateCart)
+        console.log('aqui 2')
+        
     } else {
         if(cart != undefined && product != undefined && setCart != undefined){
+            console.log('aqui 3')
             setCart([...cart, product])
         } 
-        console.log('não achou laaaaaaaaaaaaaaaa')
     }
 }

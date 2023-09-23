@@ -11,7 +11,7 @@ export default function ProducPage({ params }: IProductPage) {
     
 
     return (
-        <section className="text-Project-red-fist min-h-screen flex flex-col items-center justify-center">
+        <section className="text-project-primary-500 min-h-screen flex flex-col items-center justify-center">
             <ProductSingle id={params.id}/>
         </section>
     )

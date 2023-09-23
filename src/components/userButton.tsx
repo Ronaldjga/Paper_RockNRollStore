@@ -10,9 +10,9 @@ export default async function UserButton() {
             {
             session 
             ? (
-                <button className='px-5 py-2 bg-Project-red-fist text-white' onClick={() => signOut()}>Sair</button>
+                <button className='px-5 py-2 bg-project-primary-500 text-white' onClick={() => signOut()}>Sair</button>
             ) 
-            : (<button className='px-5 py-2 bg-Project-red-fist text-white' onClick={() => signIn()}>Login</button>)
+            : (<button className='px-5 py-2 bg-project-primary-500 text-white' onClick={() => signIn()}>Login</button>)
             }
         </>
     )

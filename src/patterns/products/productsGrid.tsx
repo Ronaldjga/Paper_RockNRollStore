@@ -1,11 +1,11 @@
 'use client'
 
 import { Product } from "@/components/product";
-import { IShirts, IWishlist, UseDataProducts } from "@/providers/data";
-import { useEffect, useState } from "react";
+import { IShirts, UseDataProducts } from "@/providers/data";
 import { useRouter } from "next/navigation";
 import addBag from '~/img/backpackBlackBuy.svg'
 import { wishlistButtonIcon } from "../../../utils/wishlist";
+import { moneyFomat } from "../../../utils/operations";
 
 export function ProductsGrid({ products } : { products: IShirts[] }) {
     const { wishlist, setWishlist } = UseDataProducts()
@@ -16,39 +16,39 @@ export function ProductsGrid({ products } : { products: IShirts[] }) {
             {
                 products?.map((data, index) => {
                     return(
-                    <Product.Root key={index} className="bg-Project-white border-b-8 border-Project-red-fist rounded-t-md p-2 gap-5 flex flex-col items-center">
+                    <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
                         <Product.Image 
-                            rootClassName="w-full pb-[125%]"
-                            imageClassName="drop-shadow-2xl"
-                            imageSize="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            rootClassName="w-full pb-[125%] bg-"
                             image={data.image}
                             alt={data.band}
                             action={() => {
                                 router.push(`/products/shirts/${data.id}`)
                             }}
                         />
-                        <Product.Content className="w-full p-2 border-t-4 border-Project-black flex flex-wrap justify-between">
+                        <Product.Content className="w-full p-2 border-t-4 border-project-secondary-500 flex flex-wrap justify-between">
                             <div className="">
                                 <Product.Text className="font-medium text-[0.8rem]" Tag={"h3"} text={data.band}/>
-                                <Product.Text className="font-bold text-[1.2rem]" Tag={"p"} text={`R$ ${data.price}`}/>
+                                <Product.Text className="font-bold text-[1.2rem]" Tag={"p"} text={moneyFomat(data.price)}/>
                             </div>
                             <Product.Actions className="self-end flex flex-col gap-2 justify-center items-center">
-                                <Product.Action 
+                                <Product.Action
+                                    kind="icon"
                                     className="w-7 h-7" 
                                     icon={addBag} 
                                     action={()=> {
                                         router.push(`/products/shirts/${data.id}`)
                                     }}
                                 />
-                                <Product.Action 
+                                <Product.Action
+                                    kind="icon"
                                     className="w-7 h-7" 
                                     icon={wishlistButtonIcon(data, wishlist)} 
                                     action={()=> {
-                                        if(wishlist.find(item => item.product.id === data.id)){
-                                            const delItem = wishlist.filter(item => item.product.id != data.id)
+                                        if(wishlist.find(item => item.id === data.id)){
+                                            const delItem = wishlist.filter(item => item.id != data.id)
                                             setWishlist(delItem)
                                         } else {
-                                            setWishlist([...wishlist, {product: data, quatity: 1}])
+                                            setWishlist([...wishlist, data])
                                         }
                                     }}
                                 />
