@@ -11,7 +11,7 @@ interface IBackToPreviousPage {
 
 export default function BackToPreviousPage({ className }: IBackToPreviousPage) {
     const router = useRouter()
-
+    
     if(window.history.length > 2){
         return (
             <button

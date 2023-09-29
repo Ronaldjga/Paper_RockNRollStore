@@ -3,6 +3,7 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { SUPABASE } from "../../utils/supabase";
+import { updateDb } from "../../utils/methods";
 
 export enum ESizes {
     P = "Pequeno",
@@ -94,20 +95,6 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         console.log(res, 'console da requiisição')
     }
 
-    async function updateDb(data: IShirts[] | ICart[], update: string) {
-        const propertie = {[update]: data}
-        console.log(propertie)
-        const req = await fetch("/api/update", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(propertie)
-        });
-        const res = await req.json()
-        console.log(res, 'REQUISIÇÃOoooooooooooooooooo POST')
-    }
-
     async function reqStorage() {
         const req = await fetch("/api/storage");
         const res = await req.json();
@@ -149,18 +136,6 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         }
     },[session])
 
-    useEffect(()=> {
-        if(userData.wishlist != wishlist && wishlist.length != 0){
-            updateDb(wishlist, 'wishlist')
-        }
-    },[wishlist])
-
-    useEffect(()=> {
-        if(userData.cart != cart && cart.length != 0){
-            updateDb(cart, 'cart')
-        }
-    },[cart])
-        
     return(
         <DataProducts.Provider value={{shirts, setShirts, allBands, userData, setUserData, cart, setCart, wishlist, setWishlist}}>
             { children }

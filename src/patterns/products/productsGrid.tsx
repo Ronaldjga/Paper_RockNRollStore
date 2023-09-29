@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import addBag from '~/img/backpackBlackBuy.svg'
 import { wishlistButtonIcon } from "../../../utils/wishlist";
 import { moneyFomat } from "../../../utils/operations";
+import { updateDb } from "../../../utils/methods";
 
 export function ProductsGrid({ products } : { products: IShirts[] }) {
     const { wishlist, setWishlist } = UseDataProducts()
@@ -47,8 +48,11 @@ export function ProductsGrid({ products } : { products: IShirts[] }) {
                                         if(wishlist.find(item => item.id === data.id)){
                                             const delItem = wishlist.filter(item => item.id != data.id)
                                             setWishlist(delItem)
+                                            updateDb(delItem, 'wishlist')
                                         } else {
-                                            setWishlist([...wishlist, data])
+                                            const newWishlist = [...wishlist, data]
+                                            setWishlist(newWishlist)
+                                            updateDb(newWishlist, 'wishlist')
                                         }
                                     }}
                                 />

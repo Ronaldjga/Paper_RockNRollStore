@@ -2,6 +2,7 @@
 
 import { UseDataProducts } from "@/providers/data"
 import { moneyFomat } from "../../utils/operations"
+import Modal from "./actions/modal/modal"
 
 export default function CartProperties() {
     const { cart } = UseDataProducts()
@@ -18,7 +19,21 @@ export default function CartProperties() {
                     </span>
                 </h5>
             )}
-            <button className="bg-project-primary-700 hover:bg-project-primary-500 p-2 font-bold rounded-md">Comprar Agora</button>
+            <Modal 
+                className="text-center text-project-secondary-800" 
+                btnClassName="min-w-fit bg-project-primary-700 hover:bg-project-primary-500 p-2 font-bold rounded-md"
+                kind="text" 
+                text="Comprar agora"
+                title={'Finalizar compra'}
+                buttonAction={{
+                    text: "Comprar",
+                    action: () => {
+                      
+                    }
+                }}
+            >
+                <p>Você tem certeza que deseja excluir o item?</p>
+            </Modal>
         </section>
     )
 }

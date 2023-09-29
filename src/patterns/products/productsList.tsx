@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react"
 import { wishlistButtonIcon } from "../../../utils/wishlist"
 import deleteIcon from '~/img/delete.svg'
 import Modal from "@/components/actions/modal/modal"
+import { updateDb } from "../../../utils/methods"
 
 
 export default function ProductsList() {
@@ -84,26 +85,33 @@ export default function ProductsList() {
                                               if(wishlist.find(itemWishlist => itemWishlist.id === item.id)){
                                                 const delItem = wishlist.filter(itemWishlist => itemWishlist.id != item.id)
                                                 setWishlist(delItem)
+                                                updateDb(delItem, 'wishlist')
                                               } else {
                                                 if(productFromStorage != null){
-                                                    setWishlist([...wishlist, productFromStorage])
+                                                    const newWishlist = [...wishlist, productFromStorage]
+                                                    setWishlist(newWishlist)
+                                                    updateDb(newWishlist, 'wishlist')
                                                 }
                                               }
                                             }}
                                         />
-                                        <Modal className="text-center" kind="icon" icon={deleteIcon} title={item.band} >
+                                        <Modal 
+                                            className="text-center" 
+                                            btnClassName="w-5 h-5 min-w-[0px] min-h-[0px]"
+                                            kind="icon" 
+                                            icon={deleteIcon} 
+                                            title={item.band}
+                                            buttonAction={{
+                                                text: "Excluir",
+                                                action: () => {
+                                                    if(myCart.find(data => data.id === item.id)){
+                                                        const delItem = myCart.filter(data => data != item)
+                                                        setCart(delItem)
+                                                    }
+                                                }
+                                            }}
+                                        >
                                             <p>Você tem certeza que deseja excluir o item?</p>
-                                            <Product.Action
-                                                kind="text"
-                                                className=" bg-project-primary-700 w-fit text-project-tertiary-300" 
-                                                text="Excluir" 
-                                                action={()=> {
-                                                  if(myCart.find(data => data.id === item.id)){
-                                                    const delItem = myCart.filter(data => data != item)
-                                                    setCart(delItem)
-                                                  }
-                                                }}
-                                            />
                                         </Modal>
                                     </Product.Actions>
                                 </Product.Content>
