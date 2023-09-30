@@ -7,6 +7,7 @@ import Notifications from '@/patterns/widget/notifications'
 import { DataProductsProvider } from '@/providers/data'
 import { NotificationsProvider } from '@/providers/notifications'
 import AuthProvider from '@/providers/auth'
+import { ReactNode } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +16,7 @@ export const metadata = {
   description: "Loja de bandas de rock 'n' roll",
 }
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout(props:any) {
   const menuLinks = [
     {link: '/', title: 'Inicio'},
     {link: '/', title: 'Produtos'},
@@ -36,7 +37,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
                 <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
               </Menu.Root>
               <Notifications/>
-              {children}
+              {props.children}
+              {props.modal}
             </NotificationsProvider>
           </DataProductsProvider>
         </AuthProvider>

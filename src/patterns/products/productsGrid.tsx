@@ -7,6 +7,7 @@ import addBag from '~/img/backpackBlackBuy.svg'
 import { wishlistButtonIcon } from "../../../utils/wishlist";
 import { moneyFomat } from "../../../utils/operations";
 import { updateDb } from "../../../utils/methods";
+import Link from "next/link";
 
 export function ProductsGrid({ products } : { products: IShirts[] }) {
     const { wishlist, setWishlist } = UseDataProducts()
@@ -18,14 +19,16 @@ export function ProductsGrid({ products } : { products: IShirts[] }) {
                 products?.map((data, index) => {
                     return(
                     <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
-                        <Product.Image 
-                            rootClassName="w-full pb-[125%] bg-"
-                            image={data.image}
-                            alt={data.band}
-                            action={() => {
-                                router.push(`/products/shirts/${data.id}`)
-                            }}
-                        />
+                        <Link className="h-[200px] w-full" href={`/products/shirts/${data.id}`}>
+                            <Product.Image
+                                rootClassName="w-full h-full "
+                                image={data.image}
+                                alt={data.band}
+                                // action={() => {
+                                //     router.push(`/products/shirts/${data.id}`)
+                                // }}
+                            />
+                        </Link>
                         <Product.Content className="w-full p-2 border-t-4 border-project-secondary-500 flex flex-wrap justify-between">
                             <div className="">
                                 <Product.Text className="font-medium text-[0.8rem]" Tag={"h3"} text={data.band}/>
