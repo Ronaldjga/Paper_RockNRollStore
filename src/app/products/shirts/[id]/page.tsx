@@ -1,5 +1,5 @@
-import ProductSingle from "@/patterns/products/productSingle"
-import Product from "@/patterns/products/productSingle"
+import OneProduct from "@/patterns/products/oneProduct/oneProduct"
+import { Suspense } from "react"
 
 interface IProductPage{
     params: {
@@ -12,7 +12,10 @@ export default function ProducPage({ params }: IProductPage) {
 
     return (
         <section className="text-project-primary-500 min-h-screen flex flex-col items-center justify-center">
-            <ProductSingle id={params.id}/>
+             <Suspense fallback={<h3 className="text-3xl text-red-500 text-center">...CARREGANDO</h3>}>
+                {/* @ts-expect-error */}
+                <OneProduct id={params.id}/>
+             </Suspense>
         </section>
     )
 }

@@ -1,6 +1,6 @@
 import ModalPage from "@/components/actions/modal/modalPage"
-import ProductSingle from "@/patterns/products/productSingle"
-import Product from "@/patterns/products/productSingle"
+import ProductSingle from "@/patterns/products/oneProduct/oneProduct"
+import Product from "@/patterns/products/oneProduct/oneProduct"
 
 interface IProductPage{
     params: {

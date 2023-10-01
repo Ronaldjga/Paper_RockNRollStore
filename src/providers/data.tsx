@@ -27,7 +27,7 @@ export interface IShirts {
     price: string
 }
 
-interface IUserData {
+export interface IUserData {
     cart: ICart[],
     wishlist: IShirts[],
     email: string,

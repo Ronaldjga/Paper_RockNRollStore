@@ -42,7 +42,7 @@ export default function Count({product, setProduct, buttonClassName, className, 
 
     function newQuantity(newQuantity: number){
         if(setProduct){
-            const updateQuantity = {...product, quantity: newQuantity, totalPrice: totalCalculationOneProduct(quantity, product.price).toString()}
+            const updateQuantity = {...product, quantity: newQuantity, totalPrice: totalCalculationOneProduct(newQuantity, product.price).toString()}
             setProduct(updateQuantity)
         } else {
             const newCart = cart.map(value =>value != product ? value : {...value, quantity: newQuantity})
@@ -55,7 +55,7 @@ export default function Count({product, setProduct, buttonClassName, className, 
             setQuantity(product.quantity)
         }
     },[product.quantity])
-
+    
     return (
         <div className={count({color, className})}>
             <CountButton 
@@ -64,12 +64,13 @@ export default function Count({product, setProduct, buttonClassName, className, 
                 setQuantity={setQuantity}
                 quantity={quantity} value="-"
                 onClick={(e)=> {
-                    setQuantity(newState => newState + 1)
+                    setQuantity(newState => newState - 1)
                     newQuantity(quantity - 1)
                 }}
             />
             <input 
-                type="text" 
+                type="text"
+                required
                 className={button({ color, className: buttonClassName })} value={quantity}
                 onChange={(e) => {
                     const inputValue = e.target.value
