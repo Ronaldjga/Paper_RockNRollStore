@@ -10,14 +10,41 @@ import { addToCart } from "../../../../utils/cart";
 import { useNotifications } from "@/providers/notifications";
 import Count from "@/components/inputs/count/count";
 import { updateDb } from "../../../../utils/methods";
+import { tv } from "tailwind-variants";
 
 interface IOneProductActions {
     product: IShirts;
     cart: ICart[];
-    wishlist: IShirts[]
+    wishlist: IShirts[],
+    type: 'page' | 'modal'
 }
 
-export default function OneProductActions({product, cart, wishlist}: IOneProductActions) {
+const oneProductActionsStyle = tv({
+  slots:{
+    mediumText: 'font-bold mb-2 inline-block',
+    bigText: '',
+    inputsRadioStyle: '',
+    countStyle: '',
+    propertieContainer: ''
+  },
+  variants: {
+    type: {
+      page: {},
+      modal: {
+        inputsRadioStyle: 'min-w-[30px] w-[30px] min-h-[30px] h-[30px] flex justify-center items-center text-[0.8rem]',
+        countStyle: 'w-8 h-6 text-sm',
+        bigText: 'text-lg',
+        mediumText: 'text-sm mb-0',
+        propertieContainer: ''
+      }
+    }
+  },
+  defaultVariants: {
+    type: "page"
+  }
+})
+
+export default function OneProductActions({product, cart, wishlist, type = 'page'}: IOneProductActions) {
   const { wishlist: LocalWishlist, setWishlist } = UseDataProducts()
   const { newNotification } = useNotifications() 
   const [newProduct, setNewProduct] = useState<ICart>({
@@ -31,10 +58,11 @@ export default function OneProductActions({product, cart, wishlist}: IOneProduct
     totalPrice: '0'
   })
 
+  const { inputsRadioStyle , mediumText, countStyle, bigText, propertieContainer } = oneProductActionsStyle({type})
+
   function editNewProduct(prop:string, value: string | number) {
     setNewProduct(newState => ({...newState, [prop]: value}))
   }
-
   useEffect(()=> {
     if(product != null){
       editNewProduct('id', product.id)
@@ -52,64 +80,70 @@ export default function OneProductActions({product, cart, wishlist}: IOneProduct
 
   return (
     <>
-        <div>
-            <Product.Text
-              className="font-bold mb-2 inline-block"
-              Tag={"h4"}
-              text="Tamanhos:"
-            />
-            {newProduct.size && (
+        <div className={propertieContainer()}>
+            <div>
               <Product.Text
-                className=" mx-2"
-                Tag={"span"}
-                text={newProduct.size.toUpperCase()}
+                className={mediumText()}
+                Tag={"h4"}
+                text="Tamanhos:"
               />
-            )}
+              {newProduct.size && (
+                <Product.Text
+                  className="mx-2"
+                  Tag={"span"}
+                  text={newProduct.size.toUpperCase()}
+                />
+              )}
+            </div>
             <InputRadio
               hookState={newProduct}
               hookSetState={setNewProduct}
               type="size"
               items={Object.keys(product.size)}
               name="sizes"
+              className={inputsRadioStyle()}
             />
-          </div>
-        <div>
-            <Product.Text
-              className="font-bold mb-2 inline-block"
-              Tag={"h4"}
-              text="Cor:"
-            />
-            {newProduct.color && (
+        </div>
+        <div className={propertieContainer()}>
+            <div>
               <Product.Text
-                className=" mx-2"
-                Tag={"span"}
-                text={newProduct.color.toUpperCase()}
+                className={mediumText()}
+                Tag={"h4"}
+                text="Cor:"
               />
-            )}
+              {newProduct.color && (
+                <Product.Text
+                  className=" mx-2"
+                  Tag={"span"}
+                  text={newProduct.color.toUpperCase()}
+                />
+              )}
+            </div>
             <InputRadio
               hookState={newProduct}
               hookSetState={setNewProduct}
               type="color"
               items={Object.keys(product.color)}
               name="colors"
+              className={inputsRadioStyle()}
             />
         </div>
-        <div>
+        <div className={propertieContainer()}>
             <Product.Text
-              className="font-bold mb-2"
+              className={mediumText()}
               Tag={"h4"}
               text="Quantidade:"
             />
-            <Count product={newProduct} setProduct={setNewProduct} />
+            <Count product={newProduct} setProduct={setNewProduct} buttonClassName={countStyle()}/>
         </div>
         <h4 className="text-center text-[1.5rem] font-bold">
-            <Product.Text Tag={"span"} text={`Subtotal: `} />
+            <Product.Text Tag={"span"} text={`Subtotal: `} className={bigText()} />
             <Product.Text
               Tag={"span"}
-              className="text-project-quaternary-500"
+              className={bigText({className: 'text-project-quaternary-500'})}
               text={`${moneyFomat(newProduct.totalPrice)}`}
             />
-          </h4>
+        </h4>
         <Product.Actions className="flex gap-2 justify-around items-center">
               <Product.Action
                 kind="icon"
@@ -163,7 +197,7 @@ export default function OneProductActions({product, cart, wishlist}: IOneProduct
                   }
                 }}
               />
-            </Product.Actions>
+        </Product.Actions>
     </>
   )
 }

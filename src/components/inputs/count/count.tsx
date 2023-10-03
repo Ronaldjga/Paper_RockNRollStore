@@ -10,7 +10,7 @@ const count = tv({
 })
 
 const button = tv({
-    base: 'w-10 h-10 border-2 flex justify-center items-center font-bold text-[1.2rem] active:bg-project-primary-500 rounded-md text-center',
+    base: 'w-10 h-10 border-2 flex justify-center items-center font-bold text-lg active:bg-project-primary-500 rounded-md text-center',
     variants: {
         color: {
             black: 'bg-project-secondary-500 text-project-tertiary-500',
