@@ -32,8 +32,10 @@ const oneProductStyles = tv({
 })
 
 export default async function OneProduct({ id, type = 'page' }: { id: string, type: 'page' | 'modal' }) {
-  const product = await productStorage(id) as IShirts;
-  const { cart, wishlist } = await reqUserStorage() as IUserData
+  // const product = await productStorage(id) as IShirts;
+  // const { cart, wishlist } = await reqUserStorage() as IUserData
+
+  const [product, {cart, wishlist}] = await Promise.all([productStorage(id) as Promise<IShirts>, reqUserStorage() as Promise<IUserData>])
 
   const { base, bigText, imageContainer, productContent, smallTexts, productRoot } = oneProductStyles({type})
 

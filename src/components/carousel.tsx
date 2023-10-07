@@ -3,7 +3,7 @@
 import Image from "next/image";
 import shirt1 from "~/img/gunsNRosesShirt.png"
 import shirt2 from "~/img/ledZeppelinShirt.png"
-import shirt3 from "~/img/pearlJamShirt.png"
+import shirt3 from "~/img/sleepTokenShirt.png"
 import { Carousel } from "@material-tailwind/react"
 import seta from '~/img/redArrow.svg'
 

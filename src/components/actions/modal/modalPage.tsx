@@ -41,7 +41,7 @@ export default function ModalPage({ children }: ModalPage) {
         >
             <div 
                 ref={wrapper}
-                className="absolute max-h-[90vh] min-h-[90vh] h-[90vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 rounded-md"
+                className="absolute max-h-[650px] h-[90vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 rounded-md"
             >
                 {children}
             </div>

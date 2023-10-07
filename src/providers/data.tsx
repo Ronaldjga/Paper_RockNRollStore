@@ -110,22 +110,6 @@ export const DataProductsProvider = ({ children }: IdataProducts) => {
         console.log(res, 'console do Storage')
     }
 
-    useEffect(()=> {
-        const channel = SUPABASE().channel('realtime userData')
-        .on("postgres_changes", {
-            event: "UPDATE",
-            schema: "public",
-            table: "users"
-        }, 
-        (payload) => {
-            console.log({payload}, 'REAAAAALLLLTIME')
-        }).subscribe()
-
-        return () => {
-            SUPABASE().removeChannel(channel)
-        }
-    }, [])
-
     useEffect(() => {
         reqStorage()
     },[])
