@@ -1,7 +1,7 @@
 'use client'
 
 import { Product } from "@/components/product"
-import { wishlistButtonIcon } from "../../../../utils/wishlist"
+import { wishlistButtonIcon } from "../../../../utils/wishlist/wishlist-button-icon"
 import { IShirts, UseDataProducts } from "@/providers/data"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -14,7 +14,7 @@ interface IGridProductsActions {
 }
 
 export default function GridProductsActions({ product, wishlist }: IGridProductsActions) {
-    const { wishlist: LocalWishlist, setWishlist } = UseDataProducts()
+    const { wishlist: localWishlist, setWishlist } = UseDataProducts()
     const router = useRouter()
 
 
@@ -35,14 +35,14 @@ export default function GridProductsActions({ product, wishlist }: IGridProducts
             <Product.Action
                 kind="icon"
                 className="w-7 h-7" 
-                icon={wishlistButtonIcon(product, LocalWishlist)} 
+                icon={wishlistButtonIcon(product, localWishlist)} 
                 action={()=> {
-                    if(LocalWishlist.find(item => item.id === product.id)){
-                        const delItem = LocalWishlist.filter(item => item.id != product.id)
+                    if(localWishlist.find(item => item.id === product.id)){
+                        const delItem = localWishlist.filter(item => item.id != product.id)
                         setWishlist(delItem)
                         updateDb(delItem, 'wishlist')
                     } else {
-                        const newWishlist = [...LocalWishlist, product]
+                        const newWishlist = [...localWishlist, product]
                         setWishlist(newWishlist)
                         updateDb(newWishlist, 'wishlist')
                     }

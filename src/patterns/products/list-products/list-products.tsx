@@ -1,32 +1,21 @@
-'use client'
-
 import { Product } from "@/components/product"
-import { ICart, UseDataProducts } from "@/providers/data"
-import { moneyFomat } from "../../../utils/operations"
+import { IShirts, IUserData } from "@/providers/data"
+import { moneyFomat } from "../../../../utils/operations"
 import Count from "@/components/inputs/count/count"
-import { useEffect, useRef, useState } from "react"
-import { wishlistButtonIcon } from "../../../utils/wishlist"
-import deleteIcon from '~/img/delete.svg'
-import Modal from "@/components/actions/modal/modal"
-import { updateDb } from "../../../utils/methods"
+import { productStorage } from "../../../../utils/product"
+import { reqUserStorage } from "../../../../utils/reqUserData"
+import ListProductsActions from "./list-products-actions"
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 'no-store'
 
-export default function ProductsList() {
-    const { cart, wishlist, setWishlist, shirts, setCart } = UseDataProducts()
-    const [myCart, setMyCart] = useState<ICart[] | null>(null)
+export default async function ProductsList() {
+    const [products, {cart, wishlist}] = await Promise.all([productStorage() as Promise<IShirts[]>, reqUserStorage() as Promise<IUserData>])
 
-
-    useEffect(() => {
-        setMyCart(cart)
-    }, [cart])
-
-    console.log(cart)
     return (
         <section className="p-5 flex flex-col gap-2 min-h-screen">
-            {myCart === null ? (<p className="text-white">... Carregando</p>) 
-            : (
-                myCart.map((item, i) => {
-                    const productFromStorage = shirts.find(data => data.id === item.id && data.band === item.band) ?? null
+            {
+                cart.map((item, i) => {
                     return (
                         <Product.Root key={i} className="w-full h-fit min-h-[100px] flex-row flex-wrap gap-2 border-b-4">
                             <Product.Image
@@ -77,50 +66,14 @@ export default function ProductsList() {
                                         product={item}
                                     />
                                     <Product.Actions className="h-fit flex items-center justify-center gap-2">
-                                        <Product.Action
-                                            kind="icon"
-                                            className="w-5 h-5 min-w-[0px] min-h-[0px]" 
-                                            icon={wishlistButtonIcon(productFromStorage, wishlist)} 
-                                            action={()=> {
-                                              if(wishlist.find(itemWishlist => itemWishlist.id === item.id)){
-                                                const delItem = wishlist.filter(itemWishlist => itemWishlist.id != item.id)
-                                                setWishlist(delItem)
-                                                updateDb(delItem, 'wishlist')
-                                              } else {
-                                                if(productFromStorage != null){
-                                                    const newWishlist = [...wishlist, productFromStorage]
-                                                    setWishlist(newWishlist)
-                                                    updateDb(newWishlist, 'wishlist')
-                                                }
-                                              }
-                                            }}
-                                        />
-                                        <Modal 
-                                            className="text-center" 
-                                            btnClassName="w-5 h-5 min-w-[0px] min-h-[0px]"
-                                            kind="icon" 
-                                            icon={deleteIcon} 
-                                            title={item.band}
-                                            buttonAction={{
-                                                text: "Excluir",
-                                                action: () => {
-                                                    if(myCart.find(data => data.id === item.id)){
-                                                        const delItem = myCart.filter(data => data != item)
-                                                        setCart(delItem)
-                                                    }
-                                                }
-                                            }}
-                                        >
-                                            <p>Você tem certeza que deseja excluir o item?</p>
-                                        </Modal>
+                                        <ListProductsActions product={item} wishlist={wishlist} cart={cart} allProducts={products}/>
                                     </Product.Actions>
                                 </Product.Content>
                             </Product.Content>
                         </Product.Root>
                     )
                 })
-            )
             }
         </section>
-  )
+    )
 }

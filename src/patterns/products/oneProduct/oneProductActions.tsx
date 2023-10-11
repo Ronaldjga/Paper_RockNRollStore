@@ -1,12 +1,12 @@
 'use client'
 
 import { Product } from "@/components/product";
-import { wishlistButtonIcon } from "../../../../utils/wishlist";
+import { wishlistButtonIcon } from "../../../../utils/wishlist/wishlist-button-icon";
 import { useEffect, useState } from "react";
 import { ICart, IShirts, UseDataProducts } from "@/providers/data";
 import InputRadio from "@/components/inputs/radios/radio";
 import { moneyFomat } from "../../../../utils/operations";
-import { addToCart } from "../../../../utils/cart";
+import { addToCart } from "../../../../utils/cart/add-item";
 import { useNotifications } from "@/providers/notifications";
 import Count from "@/components/inputs/count/count";
 import { updateDb } from "../../../../utils/methods";
@@ -45,7 +45,8 @@ const oneProductActionsStyle = tv({
 })
 
 export default function OneProductActions({product, cart, wishlist, type = 'page'}: IOneProductActions) {
-  const { wishlist: LocalWishlist, setWishlist } = UseDataProducts()
+  const { wishlist: LocalWishlist, setWishlist, cart: localCart, setCart } = UseDataProducts()
+  const [llocalcart, setLlocalCart] = useState<ICart[]>([])
   const { newNotification } = useNotifications() 
   const [newProduct, setNewProduct] = useState<ICart>({
     id: '',
@@ -77,6 +78,15 @@ export default function OneProductActions({product, cart, wishlist, type = 'page
   useEffect(() => {
     setWishlist(wishlist)
   }, [wishlist])
+  
+  useEffect(() => {
+    setCart(cart)
+    setLlocalCart(cart)
+  }, [cart])
+
+  useEffect(() => {
+    setCart(llocalcart)
+  }, [llocalcart])
 
   return (
     <>
@@ -167,32 +177,14 @@ export default function OneProductActions({product, cart, wishlist, type = 'page
                 className="w-full h-auto bg-project-primary-500 text-project-tertiary-500 font-bold"
                 text="Adicionar ao carrinho"
                 action={() => {
-                  if (
-                    Object.values(newProduct).some(
-                      (value) =>
-                        value === "" ||
-                        value === undefined ||
-                        value === 0 ||
-                        value === null
-                    )
-                  ) {
-                    const emptyProperties = Object.entries(newProduct).filter(
-                      (value) =>
-                        value[1] === "" ||
-                        value[1] === undefined ||
-                        value[1] === 0 ||
-                        value[1] === null
-                    );
-                    emptyProperties.map((item) =>
-                      newNotification({
-                        type: "Error",
-                        content: `Selecione o valor de ${item[0]}`,
-                      })
-                    );
+                  if (Object.values(newProduct).some((value) => value === "" || value === undefined || value === 0 || value === null)) {
+                      const emptyProperties = Object.entries(newProduct).filter((value) => value[1] === "" || value[1] === undefined || value[1] === 0 || value[1] === null);
+                      emptyProperties.map((item) => newNotification({type: "Error", content: `Selecione o valor de ${item[0]}`}));
                   } else {
                     addToCart({
-                      cart: cart,
+                      cart: llocalcart,
                       newItem: newProduct,
+                      setLocalCart: setLlocalCart
                     });
                   }
                 }}
