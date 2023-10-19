@@ -2,6 +2,7 @@
 
 import { IShirts, UseDataProducts } from '@/providers/data'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import searchIcon from '~/img/search.svg'
 
@@ -14,74 +15,74 @@ interface IPrices {
     initialPrice?: number
     finalPrice?: number
 }
-
-export function Filters({ setNewItems , allItems }: IChildsProps) {
+// { setNewItems , allItems }: IChildsProps
+export function Filters() {
     const { allBands } = UseDataProducts()
     const [searchBanda, setSearchBanda] = useState<string>('')
     const [optionBand, setOptionBand] = useState<string>('')
     const [optionPrice, setOptionPrice] = useState<IPrices | null>()
 
-    const priceFormat = (data?:IPrices) => {
-        const price = data || optionPrice;
-        const initialPrice = price?.initialPrice ? `R$ ${price.initialPrice}` : '';
-        const finalPrice = price?.finalPrice ? `R$ ${price.finalPrice}` : '';
-        const validatedText = price?.finalPrice ? 'até' : 'à partir';
-        return `${initialPrice} ${validatedText} ${finalPrice}`
-    }
+    // const priceFormat = (data?:IPrices) => {
+    //     const price = data || optionPrice;
+    //     const initialPrice = price?.initialPrice ? `R$ ${price.initialPrice}` : '';
+    //     const finalPrice = price?.finalPrice ? `R$ ${price.finalPrice}` : '';
+    //     const validatedText = price?.finalPrice ? 'até' : 'à partir';
+    //     return `${initialPrice} ${validatedText} ${finalPrice}`
+    // }
 
-    const prices: IPrices[] = [
-        {
-            finalPrice: 40
-        },
-        {
-            initialPrice: 41,
-            finalPrice: 75
-        },
-        {
-            initialPrice: 76,
-            finalPrice: 99
-        },
-        {
-            initialPrice: 100
-        }
-    ]
+    // const prices: IPrices[] = [
+    //     {
+    //         finalPrice: 40
+    //     },
+    //     {
+    //         initialPrice: 41,
+    //         finalPrice: 75
+    //     },
+    //     {
+    //         initialPrice: 76,
+    //         finalPrice: 99
+    //     },
+    //     {
+    //         initialPrice: 100
+    //     }
+    // ]
 
-    function setNewList(){
-        return allItems.filter((value) => {
-            if (searchBanda === '') {
-                return value
-            } else if (value.band.toLowerCase().includes(searchBanda.toLocaleLowerCase())) {
-                return value
-            }
-        }).filter((value)=> {
-            if (optionBand === '') {
-                return value
-            } else if (value.band.toLocaleLowerCase().includes(optionBand.toLocaleLowerCase())) {
-                return value
-            }
-        }).filter((value) => {
-            const price: number = parseFloat(value.price);
-            if (!optionPrice) {
-                return value
-            } else if(optionPrice.initialPrice && optionPrice.finalPrice) {
-                return price >= optionPrice.initialPrice && price <= optionPrice.finalPrice
-            } else if (optionPrice.initialPrice && !optionPrice.finalPrice) {
-                return price >= optionPrice.initialPrice
-            } else if (optionPrice.finalPrice && !optionPrice.initialPrice) {
-                return price <= optionPrice.finalPrice
-            }
-        })
-    }
+    // function setNewList(){
+    //     return allItems.filter((value) => {
+    //         if (searchBanda === '') {
+    //             return value
+    //         } else if (value.band.toLowerCase().includes(searchBanda.toLocaleLowerCase())) {
+    //             return value
+    //         }
+    //     }).filter((value)=> {
+    //         if (optionBand === '') {
+    //             return value
+    //         } else if (value.band.toLocaleLowerCase().includes(optionBand.toLocaleLowerCase())) {
+    //             return value
+    //         }
+    //     }).filter((value) => {
+    //         const price: number = parseFloat(value.price);
+    //         if (!optionPrice) {
+    //             return value
+    //         } else if(optionPrice.initialPrice && optionPrice.finalPrice) {
+    //             return price >= optionPrice.initialPrice && price <= optionPrice.finalPrice
+    //         } else if (optionPrice.initialPrice && !optionPrice.finalPrice) {
+    //             return price >= optionPrice.initialPrice
+    //         } else if (optionPrice.finalPrice && !optionPrice.initialPrice) {
+    //             return price <= optionPrice.finalPrice
+    //         }
+    //     })
+    // }
     
-    useEffect(()=> {
-        setNewItems(setNewList())
-        // console.log(optionPrice)
-    },[searchBanda, optionBand, optionPrice])
+    // useEffect(()=> {
+    //     setNewItems(setNewList())
+    //     // console.log(optionPrice)
+    // },[searchBanda, optionBand, optionPrice])
 
   return (
     <div className='my-5 p-2 flex flex-wrap gap-2 justify-center items-center bg-project-secondary-500 border-b-8 rounded-t-md border-project-primary-500'>
         <div className='w-full gap-2 flex flex-wrap items-center'>
-            <details className="w-full h-12 cursor-pointer relative bg-project-tertiary-500 rounded-lg">
+            {/* <details className="w-full h-12 cursor-pointer relative bg-project-tertiary-500 rounded-lg">
               <summary className="w-full h-full px-5 flex items-center justify-between flex-wrap">
                 <div>
                     <h3 className='inline-block font-semibold'>Preços</h3> 
@@ -118,7 +119,7 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
                     )
                 })}
               </ul>
-            </details>
+            </details> */}
             
             <details className="w-full h-12 cursor-pointer relative bg-project-tertiary-500 rounded-lg text-project-secondary-500">
               <summary className="w-full h-full px-5 flex items-center justify-between flex-wrap">
@@ -147,14 +148,14 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
             
                             }}
                         >
-                            {data}
+                            <Link scroll={false} href={`?${new URLSearchParams({band: data})}`}>{data}</Link>
                         </li>
                     )
                 })}
               </ul>
             </details>
         </div>
-        <label className='w-full h-12 pr-5 bg-project-tertiary-500 rounded-lg flex justify-between gap-1'>
+        {/* <label className='w-full h-12 pr-5 bg-project-tertiary-500 rounded-lg flex justify-between gap-1'>
             <input
                 name='searchBanda'
                 className='w-full h-full bg-transparent p-5'
@@ -163,7 +164,7 @@ export function Filters({ setNewItems , allItems }: IChildsProps) {
                 setSearchBanda(e.target.value)
             }}/>
             <Image className='w-[40px] h-auto' src={searchIcon} alt='Search Icon'/>
-        </label>
+        </label> */}
     </div>
   )
 }

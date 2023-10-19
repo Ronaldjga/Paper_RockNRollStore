@@ -5,23 +5,45 @@ import { productStorage } from "../../../../utils/product";
 import { moneyFomat } from "../../../../utils/operations";
 import { reqUserStorage } from "../../../../utils/reqUserData";
 import GridProductsActions from "./grid-products-actions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+interface IFilter {
+    title: keyof IShirts
+    value: string
+}
 
 interface IGridProducts { 
     type: "storage" | "wishlist";
+    filter: IFilter[]
 }
 
 export const revalidate = 30
 
-export async function GridProducts({type = "storage"}: IGridProducts) {
-    const [reqProducts, { wishlist }] = await Promise.all([productStorage() as Promise<IShirts[]>, reqUserStorage() as Promise<IUserData>])
+export async function GridProducts({type = "storage", filter}: IGridProducts) {
+    const session = await getServerSession(authOptions)
+    const reqProducts = await productStorage() as IShirts[]
+    let wishlist: IShirts[] = []
+    if(session){
+        const userStorage = await reqUserStorage() as IUserData
+        wishlist = userStorage.wishlist
+    } else{
+        wishlist = []
+    } 
     const products = type === 'storage' ? reqProducts : wishlist
 
 
     return (
         <div className="grid grid-cols-2 gap-2">
             {
-                products.map((data, index) => {
-                    return(
+                products.filter((val) => {
+                    if(filter.every(filtersObject => filtersObject.value === '' )) {
+                        return val
+                    } else if(filter.some(filtersObject => filtersObject.value != '' && val[filtersObject.title].toLowerCase().includes(filtersObject.value.toLowerCase()))){
+                        return val
+                    }
+                }).map((data, index) => {
+                return(
                     <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
                         <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`}>
                             <Product.Image
