@@ -8,6 +8,9 @@ export function idProductPage(id:string, products:IShirts[]): IShirts | null {
 
 export async function productStorage(id?: string): Promise<IShirts | IShirts[] | null> {
     const { data, error } = await SUPABASE().from('Storage').select('Band, Shirts')
+    if(error){
+        throw new Error("Products from storage request failed")
+    }
     const products: IShirts[] = data?.reduce((acc: IShirts[], obj: { Band: string; Shirts?: IShirts[] }) => {
         if (obj.Shirts) {
         return [...acc, ...obj.Shirts];
@@ -22,4 +25,13 @@ export async function productStorage(id?: string): Promise<IShirts | IShirts[] |
     } else {
         return  null
     }
+}
+
+export async function reqAllBands(id?: string) {
+    const { data, error } = await SUPABASE().from('Storage').select('Band')
+    if(error){
+        throw new Error('allBands request failed')
+    }
+    const allBands = data?.map(item => item.Band)
+    return allBands
 }

@@ -9,7 +9,7 @@ interface OptionsFilter {
     filter: string
 }
 
-export default function Options({ list , searchParams, filter}: OptionsFilter) {
+export default function FilterOptions({ list , searchParams, filter}: OptionsFilter) {
     const router = useRouter()
     const myParams = useSearchParams()
 

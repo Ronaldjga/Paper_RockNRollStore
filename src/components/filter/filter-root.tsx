@@ -1,12 +1,13 @@
 import { ReactNode } from "react"
 
 interface IFilterRoot {
-  children: ReactNode
+  children: ReactNode,
+  className?: string
 }
 
-export default function FilterRoot({ children }: IFilterRoot) {
+export default function FilterRoot({ children, className }: IFilterRoot) {
   return (
-    <div>
+    <div className={className}>
       {children}
     </div>
   )

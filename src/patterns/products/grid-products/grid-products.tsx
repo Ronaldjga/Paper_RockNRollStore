@@ -32,17 +32,30 @@ export async function GridProducts({type = "storage", filter}: IGridProducts) {
     } 
     const products = type === 'storage' ? reqProducts : wishlist
 
+    console.log(filter)
+
+    const filteredProducts =  products.filter((val) => {
+        if (filter.every(filtersObject => filtersObject.value === '')) {
+            return true;
+        } else if (filter.some(e => (e.title === 'minPrice' as keyof IShirts || e.title === 'maxPrice' as keyof IShirts) && e.value !== '')) {
+            const minPrice = parseFloat(filter.find(e => e.title === 'minPrice' as keyof IShirts)?.value || '') || null;
+            const maxPrice = parseFloat(filter.find(e => e.title === 'maxPrice' as keyof IShirts)?.value || '') || null;
+            const price = parseFloat(val.price);
+    
+            if ((minPrice === null || price >= minPrice) && (maxPrice === null || price <= maxPrice)) {
+                return true;
+            }
+        } else if (filter.some(filtersObject => filtersObject.value !== '' && val[filtersObject.title].toLowerCase().includes(filtersObject.value.toLowerCase()))){
+            return true;
+        }
+    
+        return false;
+    });
 
     return (
         <div className="grid grid-cols-2 gap-2">
             {
-                products.filter((val) => {
-                    if(filter.every(filtersObject => filtersObject.value === '' )) {
-                        return val
-                    } else if(filter.some(filtersObject => filtersObject.value != '' && val[filtersObject.title].toLowerCase().includes(filtersObject.value.toLowerCase()))){
-                        return val
-                    }
-                }).map((data, index) => {
+                filteredProducts.map((data, index) => {
                 return(
                     <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
                         <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`}>

@@ -1,7 +1,11 @@
-import Options from "./filter-options";
+import FilterMinMax from "./filter-min-max";
+import FilterOptions from "./filter-options";
 import FilterRoot from "./filter-root";
+import FilterSearch from "./filter-search";
 
 export const Filter = {
-    Options: Options,
+    Options: FilterOptions,
+    Search: FilterSearch,
+    MinMax: FilterMinMax,
     Root: FilterRoot
 }
