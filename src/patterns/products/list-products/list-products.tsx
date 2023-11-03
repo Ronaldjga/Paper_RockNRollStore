@@ -1,16 +1,30 @@
 import { Product } from "@/components/product"
-import { IShirts, IUserData } from "@/providers/data"
+import { ICart, IShirts, IUserData } from "@/providers/data"
 import { moneyFomat } from "../../../../utils/operations"
 import Count from "@/components/inputs/count/count"
 import { productStorage } from "../../../../utils/product"
 import { reqUserStorage } from "../../../../utils/reqUserData"
 import ListProductsActions from "./list-products-actions"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 'no-store'
 
 export default async function ProductsList() {
-    const [products, {cart, wishlist}] = await Promise.all([productStorage() as Promise<IShirts[]>, reqUserStorage() as Promise<IUserData>])
+    const products = await productStorage() as IShirts[]
+    const session = await getServerSession(authOptions)
+    let wishlist: IShirts[] = []
+    let cart: ICart[] = []
+    if(session){
+        const userStorage = await reqUserStorage() as IUserData
+        wishlist = userStorage.wishlist
+        cart = userStorage.cart
+    } else{
+        wishlist = []
+        cart = []
+    } 
+
 
     return (
         <section className="p-5 flex flex-col gap-2 min-h-screen">

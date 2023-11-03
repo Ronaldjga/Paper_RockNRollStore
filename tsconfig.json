@@ -24,6 +24,6 @@
       "~/*": ["./public/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/**/*", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/**/*", ".next/types/**/*.ts", "middleware.ts"],
   "exclude": ["node_modules"]
 }

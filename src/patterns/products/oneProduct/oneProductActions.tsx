@@ -71,7 +71,6 @@ export default function OneProductActions({product, cart, wishlist, type = 'page
       editNewProduct('band', product.band)
       editNewProduct('price', product.price)
       editNewProduct('totalPrice', product.price)
-      console.log('execultando aqui')
     }
   },[product])
 

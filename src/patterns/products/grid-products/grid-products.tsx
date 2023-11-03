@@ -32,8 +32,6 @@ export async function GridProducts({type = "storage", filter}: IGridProducts) {
     } 
     const products = type === 'storage' ? reqProducts : wishlist
 
-    console.log(filter)
-
     const filteredProducts =  products.filter((val) => {
         if (filter.every(filtersObject => filtersObject.value === '')) {
             return true;

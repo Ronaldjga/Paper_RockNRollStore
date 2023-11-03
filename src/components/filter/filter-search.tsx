@@ -17,7 +17,6 @@ export default function FilterSearch() {
         if(data === '') {
             params.delete('product')
         }
-        console.log(myParams.get('product'), 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         return params.toString()
     }
 

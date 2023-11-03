@@ -19,7 +19,6 @@ export default function FilterOptions({ list , searchParams, filter}: OptionsFil
         if(data === myParams.get(filter)) {
             params.delete(filter)
         }
-        console.log(myParams.get(filter), 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         return params.toString()
     }
 

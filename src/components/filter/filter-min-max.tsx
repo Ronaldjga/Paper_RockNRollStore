@@ -45,8 +45,6 @@ export default function FilterMinMax() {
             <InputPrice
                 name="min"
                 change={(e) => {
-                    const newValue = e.target.value.replace(/[^0-9,.]/g, "")
-                    console.log(newValue)
                     setMinValue(e.target.value.replace(/[^0-9,.]/g, ""));
                 }}
                 value={minValue}
@@ -54,8 +52,6 @@ export default function FilterMinMax() {
             <InputPrice
                 name="max"
                 change={(e) => {
-                    const newValue = e.target.value.replace(/[^0-9,.]/g, "")
-                    console.log(newValue)
                     setMaxValue(e.target.value.replace(/[^0-9,.]/g, ""));
                 }}
                 value={maxValue}

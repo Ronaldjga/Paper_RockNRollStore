@@ -1,10 +1,12 @@
-import { IShirts, IUserData } from "@/providers/data";
+import { ICart, IShirts, IUserData } from "@/providers/data";
 import { Product } from "@/components/product/index";
 import {moneyFomat} from "../../../../utils/operations";
 import { productStorage, idProductPage } from "../../../../utils/product";
 import OneProductActions from "./oneProductActions";
 import { reqUserStorage } from "../../../../utils/reqUserData";
 import { tv } from "tailwind-variants";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 const oneProductStyles = tv({
   slots: {
@@ -32,7 +34,18 @@ const oneProductStyles = tv({
 })
 
 export default async function OneProduct({ id, type = 'page' }: { id: string, type: 'page' | 'modal' }) {
-  const [product, {cart, wishlist}] = await Promise.all([productStorage(id) as Promise<IShirts>, reqUserStorage() as Promise<IUserData>])
+  const product = await productStorage(id) as IShirts
+  const session = await getServerSession(authOptions)
+    let wishlist: IShirts[] = []
+    let cart: ICart[] = []
+    if(session){
+        const userStorage = await reqUserStorage() as IUserData
+        wishlist = userStorage.wishlist
+        cart = userStorage.cart
+    } else{
+        wishlist = []
+        cart = []
+    } 
 
   const { base, bigText, imageContainer, productContent, smallTexts, productRoot } = oneProductStyles({type})
 

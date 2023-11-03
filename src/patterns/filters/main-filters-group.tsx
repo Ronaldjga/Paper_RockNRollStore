@@ -8,7 +8,6 @@ interface IMainFiltersGroup {
 
 export default async function MainFiltersGroup({band}: IMainFiltersGroup) {
     const allBands = await reqAllBands()
-    console.log(allBands)
   return (
     <Filter.Root className='flex flex-col gap-3 mb-2'>
         <Filter.Options filter="band" list={allBands} searchParams={band}/>
