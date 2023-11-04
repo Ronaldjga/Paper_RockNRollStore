@@ -31,10 +31,12 @@ export default function RootLayout(props:any) {
           <DataProductsProvider>
             <NotificationsProvider>
               <Menu.Root>
-                {/* @ts-expect-error */}
-                <SessionAccount/>
+                <div className='w-full flex'>
+                  {/* @ts-expect-error */}
+                  <SessionAccount/>
+                  <Menu.Icon className='m-auto' icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
+                </div>
                 <Menu.Links links={menuLinks}/>
-                <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
               </Menu.Root>
               <Notifications/>
               {props.children}

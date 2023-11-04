@@ -1,21 +1,16 @@
-'use client'
-
 import { ReactNode } from "react"
 import { signIn } from "next-auth/react"
+import Image from "next/image"
 
 interface ISigninButtonRoot {
-    children: ReactNode,
-    provider: string,
-    className?: ''
+  className?: string;
+  children: ReactNode
 }
 
-export default function SigninButtonRoot({ children, provider, className } : ISigninButtonRoot) {
+export default function SigninButtonRoot({ className, children } : ISigninButtonRoot) {
   return (
-    <button
-        className={`${className} py-2 px-5 bg-Project-red-fist`}
-        onClick={() => signIn(provider)}
-    >
-        {children}
-    </button>
+    <div className={className}>
+      {children}
+    </div>
   )
 }
