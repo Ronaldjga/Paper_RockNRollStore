@@ -23,14 +23,19 @@ export const revalidate = 30
 export async function GridProducts({type = "storage", filter}: IGridProducts) {
     const session = await getServerSession(authOptions)
     const reqProducts = await productStorage() as IShirts[]
+    
+    let allProducts: IShirts[] = []
     let wishlist: IShirts[] = []
+
+    if(reqProducts.length != 0) {
+        allProducts = reqProducts
+    }
     if(session){
         const userStorage = await reqUserStorage() as IUserData
         wishlist = userStorage.wishlist
-    } else{
-        wishlist = []
-    } 
-    const products = type === 'storage' ? reqProducts : wishlist
+    }
+
+    const products = type === 'storage' ? allProducts : wishlist
 
     const filteredProducts =  products.filter((val) => {
         if (filter.every(filtersObject => filtersObject.value === '')) {

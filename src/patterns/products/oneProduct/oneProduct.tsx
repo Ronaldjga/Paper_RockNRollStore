@@ -36,16 +36,17 @@ const oneProductStyles = tv({
 export default async function OneProduct({ id, type = 'page' }: { id: string, type: 'page' | 'modal' }) {
   const product = await productStorage(id) as IShirts
   const session = await getServerSession(authOptions)
-    let wishlist: IShirts[] = []
-    let cart: ICart[] = []
-    if(session){
-        const userStorage = await reqUserStorage() as IUserData
-        wishlist = userStorage.wishlist
-        cart = userStorage.cart
-    } else{
-        wishlist = []
-        cart = []
-    } 
+  let wishlist: IShirts[] = []
+  let cart: ICart[] = []
+  
+  if(session){
+      const userStorage = await reqUserStorage() as IUserData
+      wishlist = userStorage.wishlist
+      cart = userStorage.cart
+  } else{
+      wishlist = []
+      cart = []
+  } 
 
   const { base, bigText, imageContainer, productContent, smallTexts, productRoot } = oneProductStyles({type})
 

@@ -7,6 +7,9 @@ export async function reqUserStorage() {
     const supabaseAccessToken: string = session?.supabaseAccessToken ?? ''
     if(supabaseAccessToken) {
         const { data, error } = await SUPABASE(supabaseAccessToken).from('users').select("*").eq('name', session?.user.name).eq('email', session?.user.email)
+        if(error) {
+            throw new Error(error.message)
+        }
         if(data && data.length > 0) {
             const userData = data[0]
             return userData

@@ -12,10 +12,17 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 'no-store'
 
 export default async function ProductsList() {
-    const products = await productStorage() as IShirts[]
+    const allProduct = await productStorage() as IShirts[]
     const session = await getServerSession(authOptions)
+
+    let products: IShirts[] = []
     let wishlist: IShirts[] = []
     let cart: ICart[] = []
+
+    if(allProduct.length != 0) {
+        products = allProduct
+    }
+
     if(session){
         const userStorage = await reqUserStorage() as IUserData
         wishlist = userStorage.wishlist

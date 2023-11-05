@@ -26,8 +26,6 @@ export default function ListProductsActions({ product, wishlist}: IListProductsA
     setWishlist(wishlist)
   }, [wishlist, setWishlist])
 
-  console.log(cart)
-
   return (
     <>
       <Product.Action
