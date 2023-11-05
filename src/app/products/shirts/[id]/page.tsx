@@ -11,11 +11,11 @@ export default function ProducPage({ params }: IProductPage) {
     
 
     return (
-        <section className="text-project-primary-500 min-h-screen flex flex-col items-center justify-center">
+        <main className="text-project-primary-500 min-h-screen flex flex-col items-center justify-center">
              <Suspense fallback={<h3 className="text-3xl text-red-500 text-center">...CARREGANDO</h3>}>
                 {/* @ts-expect-error */}
                 <OneProduct id={params.id}/>
              </Suspense>
-        </section>
+        </main>
     )
 }

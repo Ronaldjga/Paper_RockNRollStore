@@ -61,7 +61,7 @@ export async function GridProducts({type = "storage", filter}: IGridProducts) {
                 filteredProducts.map((data, index) => {
                 return(
                     <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
-                        <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`}>
+                        <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`} scroll={false}>
                             <Product.Image
                                 rootClassName="w-full h-full "
                                 image={data.image}
