@@ -7,7 +7,7 @@ import Notifications from '@/patterns/widget/notifications'
 import { DataProductsProvider } from '@/providers/data'
 import { NotificationsProvider } from '@/providers/notifications'
 import AuthProvider from '@/providers/auth'
-import { ReactNode } from 'react'
+import wishlistICon from '~/img/heartRedBorder.svg'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,10 +31,11 @@ export default function RootLayout(props:any) {
           <DataProductsProvider>
             <NotificationsProvider>
               <Menu.Root>
-                <div className='w-full flex'>
+                <div className='w-full flex justify-between pr-5'>
                   {/* @ts-expect-error */}
                   <SessionAccount/>
-                  <Menu.Icon className='m-auto' icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
+                  <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
+                  <Menu.Icon icon={wishlistICon} alt='Lista de desejos' link='/wishlist'/>
                 </div>
                 <Menu.Links links={menuLinks}/>
               </Menu.Root>

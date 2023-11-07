@@ -15,10 +15,9 @@ interface IFilter {
 
 interface IGridProducts { 
     type: "storage" | "wishlist";
-    filter: IFilter[]
+    filter?: IFilter[]
 }
 
-export const revalidate = 30
 
 export async function GridProducts({type = "storage", filter}: IGridProducts) {
     const session = await getServerSession(authOptions)
@@ -38,27 +37,29 @@ export async function GridProducts({type = "storage", filter}: IGridProducts) {
     const products = type === 'storage' ? allProducts : wishlist
 
     const filteredProducts =  products.filter((val) => {
-        if (filter.every(filtersObject => filtersObject.value === '')) {
+        if (filter?.every(filtersObject => filtersObject.value === '')) {
             return true;
-        } else if (filter.some(e => (e.title === 'minPrice' as keyof IShirts || e.title === 'maxPrice' as keyof IShirts) && e.value !== '')) {
-            const minPrice = parseFloat(filter.find(e => e.title === 'minPrice' as keyof IShirts)?.value || '') || null;
-            const maxPrice = parseFloat(filter.find(e => e.title === 'maxPrice' as keyof IShirts)?.value || '') || null;
+        } else if (filter?.some(e => (e.title === 'minPrice' as keyof IShirts || e.title === 'maxPrice' as keyof IShirts) && e.value !== '')) {
+            const minPrice = parseFloat(filter?.find(e => e.title === 'minPrice' as keyof IShirts)?.value || '') || null;
+            const maxPrice = parseFloat(filter?.find(e => e.title === 'maxPrice' as keyof IShirts)?.value || '') || null;
             const price = parseFloat(val.price);
     
             if ((minPrice === null || price >= minPrice) && (maxPrice === null || price <= maxPrice)) {
                 return true;
             }
-        } else if (filter.some(filtersObject => filtersObject.value !== '' && val[filtersObject.title].toLowerCase().includes(filtersObject.value.toLowerCase()))){
+        } else if (filter?.some(filtersObject => filtersObject.value !== '' && val[filtersObject.title].toLowerCase().includes(filtersObject.value.toLowerCase()))){
             return true;
         }
     
         return false;
     });
 
+    const withFilter = filter ? filteredProducts : products
+
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
             {
-                filteredProducts.map((data, index) => {
+                withFilter.map((data, index) => {
                 return(
                     <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
                         <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`} scroll={false}>

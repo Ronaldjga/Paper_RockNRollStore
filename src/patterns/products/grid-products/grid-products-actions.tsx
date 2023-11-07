@@ -41,10 +41,12 @@ export default function GridProductsActions({ product, wishlist }: IGridProducts
                         const delItem = localWishlist.filter(item => item.id != product.id)
                         setWishlist(delItem)
                         updateDb(delItem, 'wishlist')
+                        router.refresh()
                     } else {
                         const newWishlist = [...localWishlist, product]
                         setWishlist(newWishlist)
                         updateDb(newWishlist, 'wishlist')
+                        router.refresh()
                     }
                 }}
             />
