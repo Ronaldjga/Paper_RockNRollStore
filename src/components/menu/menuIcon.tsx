@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { twMerge } from "tailwind-merge"
 
 interface IMenuIcon {
     className?: string
@@ -10,7 +11,7 @@ interface IMenuIcon {
 
 export default function MenuIcon({className, icon, alt, link}: IMenuIcon) {
   return (
-    <Link href={link || '/'} className={`w-8 h-8 relative ${className}`}>
+    <Link href={link || '/'} className={twMerge('w-8 h-8 relative', className)}>
         <Image src={icon} alt={alt} fill/>
     </Link>
   )

@@ -79,16 +79,8 @@ export default async function ProductsList() {
                                         />
                                     </Product.Content>
                                 </div>
-                                <Product.Content className="flex gap-2 items-center justify-start">
-                                    <Count 
-                                        className="!gap-1" 
-                                        buttonClassName="w-8 h-6 text-[0.8rem]"
-                                        color="black"
-                                        product={item}
-                                    />
-                                    <Product.Actions className="h-fit flex items-center justify-center gap-2">
-                                        <ListProductsActions product={item} wishlist={wishlist} cart={cart} allProducts={products}/>
-                                    </Product.Actions>
+                                <Product.Content className="flex gap-2 items-center justify-start">                                    
+                                    <ListProductsActions product={item} wishlist={wishlist} cart={cart} allProducts={products}/>
                                 </Product.Content>
                             </Product.Content>
                         </Product.Root>

@@ -4,6 +4,7 @@ import { ICart, UseDataProducts } from "@/providers/data"
 import { ComponentProps, useEffect, useState } from "react"
 import { totalCalculationOneProduct } from "../../../../utils/operations"
 import { tv, VariantProps } from 'tailwind-variants'
+import { updateDb } from "../../../../utils/methods"
 
 const count = tv({
     base: 'flex gap-2 justify-center flex-wrap'
@@ -40,12 +41,19 @@ export default function Count({product, setProduct, buttonClassName, className, 
     const [quantity, setQuantity] = useState<number>(1)
     const {cart ,setCart} = UseDataProducts()
 
-    function newQuantity(newQuantity: number){
+    async function newQuantity(newQuantity: number){
         if(setProduct){
             const updateQuantity = {...product, quantity: newQuantity, totalPrice: totalCalculationOneProduct(newQuantity, product.price).toString()}
             setProduct(updateQuantity)
         } else {
-            const newCart = cart.map(value =>value != product ? value : {...value, quantity: newQuantity})
+            const newCart = cart.map(value =>
+                value.id === product.id &&
+                value.band === product.band &&
+                value.size === product.size &&
+                (value.quantity === product.quantity || value.quantity != product.quantity)
+                ? {...value, quantity: newQuantity}
+                : value)
+            await updateDb(newCart, 'cart')
             setCart(newCart)
         }
     }

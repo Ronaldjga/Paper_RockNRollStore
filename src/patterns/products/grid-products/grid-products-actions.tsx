@@ -3,7 +3,7 @@
 import { Product } from "@/components/product"
 import { wishlistButtonIcon } from "../../../../utils/wishlist/wishlist-button-icon"
 import { IShirts, UseDataProducts } from "@/providers/data"
-import { useEffect } from "react"
+import { useEffect, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import addBag from '~/img/backpackBlackBuy.svg'
 import { updateDb } from "../../../../utils/methods"
@@ -15,6 +15,7 @@ interface IGridProductsActions {
 
 export default function GridProductsActions({ product, wishlist }: IGridProductsActions) {
     const { wishlist: localWishlist, setWishlist } = UseDataProducts()
+    const [isPending, startTransition] = useTransition();
     const router = useRouter()
 
 
@@ -46,7 +47,9 @@ export default function GridProductsActions({ product, wishlist }: IGridProducts
                         const newWishlist = [...localWishlist, product]
                         setWishlist(newWishlist)
                         updateDb(newWishlist, 'wishlist')
-                        router.refresh()
+                        startTransition(() => {
+                            router.refresh();
+                        }); 
                     }
                 }}
             />

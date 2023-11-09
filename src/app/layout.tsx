@@ -31,7 +31,7 @@ export default function RootLayout(props:any) {
           <DataProductsProvider>
             <NotificationsProvider>
               <Menu.Root>
-                <div className='w-full flex justify-between pr-5'>
+                <div className='w-full flex justify-between items-center pr-5'>
                   {/* @ts-expect-error */}
                   <SessionAccount/>
                   <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
