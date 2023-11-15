@@ -19,7 +19,8 @@ interface ICommonProps {
   buttonAction?: {
     text: string;
     action: () => void
-  }
+  },
+  btnDisable?: boolean
 }
 
 interface IBtnIcon extends ICommonProps {
@@ -37,7 +38,7 @@ type TModal = | IBtnIcon | IBtnText
   
 
 
-export default function Modal({ title, children, className, btnClassName, buttonAction,...props }: TModal) {
+export default function Modal({ title, children, className, btnClassName, buttonAction, btnDisable = false, ...props }: TModal) {
   const [ isOpen, setIsOpen ] = useState<boolean>(false)
   const modalButton = props.kind === 'icon' ?
    <ModalButton kind="icon" className={btnClassName} action={() => handleModal()} icon={props.icon} /> 
@@ -67,6 +68,7 @@ export default function Modal({ title, children, className, btnClassName, button
                         action={buttonAction?.action}
                         text={buttonAction?.text}
                         modalHandler={setIsOpen}
+                        isDisable={btnDisable}
                       />
                     }
                 </div>

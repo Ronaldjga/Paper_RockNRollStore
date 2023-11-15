@@ -5,6 +5,7 @@ import { ComponentProps, useEffect, useState } from "react"
 import { totalCalculationOneProduct } from "../../../../utils/operations"
 import { tv, VariantProps } from 'tailwind-variants'
 import { updateDb } from "../../../../utils/methods"
+import { useRouter } from "next/navigation"
 
 const count = tv({
     base: 'flex gap-2 justify-center flex-wrap'
@@ -40,6 +41,7 @@ type ICountButton = ComponentProps<'button'> & VariantProps<typeof button> & {
 export default function Count({product, setProduct, buttonClassName, className, color}: ICount) {
     const [quantity, setQuantity] = useState<number>(1)
     const {cart ,setCart} = UseDataProducts()
+    const router = useRouter()
 
     async function newQuantity(newQuantity: number){
         if(setProduct){
@@ -51,10 +53,14 @@ export default function Count({product, setProduct, buttonClassName, className, 
                 value.band === product.band &&
                 value.size === product.size &&
                 (value.quantity === product.quantity || value.quantity != product.quantity)
-                ? {...value, quantity: newQuantity}
+                ? {...value, quantity: newQuantity, totalPrice: totalCalculationOneProduct(newQuantity, product.price).toString()}
                 : value)
             await updateDb(newCart, 'cart')
             setCart(newCart)
+            await window.clearTimeout(undefined);
+            const newTimeoutId = setTimeout(() => {
+                router.refresh();
+            }, 1000);          
         }
     }
     

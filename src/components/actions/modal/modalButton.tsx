@@ -55,10 +55,11 @@ interface IModalButtonActions {
   rootClassName?: string;
   modalHandler: (value: SetStateAction<boolean>) => void,
   text: string,
-  action: () => void
+  action: () => void,
+  isDisable: boolean
 }
 
-export function ModalButtonActions({modalHandler, rootClassName, text, action}: IModalButtonActions){
+export function ModalButtonActions({modalHandler, rootClassName, text, action, isDisable}: IModalButtonActions){
   
   return(
     <div className={twMerge(rootClassName, 'flex justify-center items-center flex-wrap-reverse gap-5 px-2')}>
@@ -71,6 +72,7 @@ export function ModalButtonActions({modalHandler, rootClassName, text, action}: 
           Cancelar
       </button>
       <button
+        disabled={isDisable}
         type="button"
         className={`bg-project-primary-700 text-project-tertiary-100 py-1 px-5 rounded-md hover:bg-project-primary-500`}
         onClick={async (e) => {
