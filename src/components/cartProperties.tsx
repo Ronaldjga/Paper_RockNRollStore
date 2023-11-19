@@ -54,9 +54,8 @@ export default function CartProperties() {
                             body: JSON.stringify({name, email, message: description, adress, cart: cart, total: subtotal})
                         })
                         const res = await sendEmail.json()
-                        console.log(res)
-                        // await updateDb([], 'cart')
-                        // setCart([])
+                        await updateDb([], 'cart')
+                        setCart([])
                         setsendEmailLoading(true)
                     }
                 }}
