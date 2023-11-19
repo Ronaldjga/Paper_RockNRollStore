@@ -14,6 +14,7 @@ export default function CartProperties() {
     const [email, setEmail] = useState<string>('')
     const [adress, setAdress] = useState<string>('')
     const [description, setDescription] = useState<string>('')
+    const [sendEmailLoading, setsendEmailLoading] = useState<boolean>(false)
     const subtotal = moneyFomat(cart.reduce((acc, obj) => {
         return (acc + parseFloat(obj.totalPrice))
     }, 0))
@@ -47,6 +48,7 @@ export default function CartProperties() {
                 buttonAction={{
                     text: "Finalizar",
                     action: async () => {
+                        setsendEmailLoading(true)
                         const sendEmail = await fetch("/api/email", {
                             method: 'POST',
                             body: JSON.stringify({name, email, message: description, adress, cart: cart, total: subtotal})
@@ -55,38 +57,46 @@ export default function CartProperties() {
                         console.log(res)
                         // await updateDb([], 'cart')
                         // setCart([])
-                        // console.log('execuyto')
+                        setsendEmailLoading(true)
                     }
                 }}
-                btnDisable={modalBtnDisable}
+                btnDisable={modalBtnDisable || sendEmailLoading}
             >
-                <div>
+                {sendEmailLoading ? (
                     <div>
-                        <label >
-                            <span>Nome:</span>
-                            <input className="w-full px-2 py-1 border rounded-md" type="text" name="name" onChange={(e) => setName(e.target.value)}/>
-                        </label>
+                        <p>...Carregando</p>
                     </div>
+                ) : (
+                  <>
                     <div>
-                        <label >
-                            <span>Email:</span>
-                            <input className="w-full px-2 py-1 border rounded-md" type="text" name="email" onChange={(e) => setEmail(e.target.value)}/>
-                        </label>
+                        <div>
+                            <label >
+                                <span>Nome:</span>
+                                <input className="w-full px-2 py-1 border rounded-md" type="text" name="name" onChange={(e) => setName(e.target.value)}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label >
+                                <span>Email:</span>
+                                <input className="w-full px-2 py-1 border rounded-md" type="text" name="email" onChange={(e) => setEmail(e.target.value)}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <span>Endereço:</span>
+                                <input className="w-ful px-2 py-1 border rounded-md" type="text" onChange={(e) => setAdress(e.target.value)}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <span>Mensagem:</span>
+                                <textarea className="resize-none w-full px-2 py-1 border rounded-md" onChange={(e) => setDescription(e.target.value)}/>
+                            </label>
+                        </div>
                     </div>
-                    <div>
-                        <label>
-                            <span>Endereço:</span>
-                            <input className="w-ful px-2 py-1 border rounded-md" type="text" onChange={(e) => setAdress(e.target.value)}/>
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <span>Mensagem:</span>
-                            <textarea className="resize-none w-full px-2 py-1 border rounded-md" onChange={(e) => setDescription(e.target.value)}/>
-                        </label>
-                    </div>
-                </div>
-                <h4>Total: <span className="font-semibold">{subtotal}</span></h4>
+                    <h4>Total: <span className="font-semibold">{subtotal}</span></h4>
+                  </>  
+                )}
             </Modal>
         </section>
     )

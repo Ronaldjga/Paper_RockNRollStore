@@ -15,7 +15,6 @@ interface reqBody {
 
 export async function POST(request: NextRequest) {
     const { email, name, message, adress,cart, total } = await request.json() as reqBody;
-    console.log('ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss', email, name, message)
 
     const transport = nodemailer.createTransport({
       service: 'gmail',
