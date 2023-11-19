@@ -16,6 +16,8 @@ module.exports = {
         GITHUB_ID: process.env.GITHUB_ID,
         GITHUB_SECRET: process.env.GITHUB_SECRET,
         NEXTAUTHSECRET: process.env.NEXTAUTHSECRET,
-        NEXTAUTHSITE: process.env.NEXTAUTHSITE
+        NEXTAUTHSITE: process.env.NEXTAUTHSITE,
+        APP_EMAIL: process.env.APP_EMAIL,
+        APP_PASSWORD: process.env.APP_PASSWORD
     },
 }

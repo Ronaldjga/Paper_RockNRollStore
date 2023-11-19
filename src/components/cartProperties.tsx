@@ -11,6 +11,7 @@ export default function CartProperties() {
     const { cart, setCart } = UseDataProducts()
     const { newNotification } = useNotifications()
     const [name, setName] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [adress, setAdress] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const subtotal = moneyFomat(cart.reduce((acc, obj) => {
@@ -20,12 +21,12 @@ export default function CartProperties() {
     const [modalBtnDisable, setModalBtnDisable] = useState(false)
 
     useEffect(() => {
-        if(name === '' || adress === '' || description === ''){
+        if(name === '' || adress === '' || description === '' || email === ''){
             setModalBtnDisable(true)
         } else {
             setModalBtnDisable(false)
         }
-    }, [name, adress, description])
+    }, [name, adress, description, email])
 
     return (
         <section className="fixed flex gap-2 justify-around items-center p-2 min-h-[50px] w-full bottom-0 bg-black border-t-4 border-project-primary-400 text-project-tertiary-500">
@@ -46,9 +47,15 @@ export default function CartProperties() {
                 buttonAction={{
                     text: "Finalizar",
                     action: async () => {
-                        await updateDb([], 'cart')
-                        setCart([])
-                        console.log('execuyto')
+                        const sendEmail = await fetch("/api/email", {
+                            method: 'POST',
+                            body: JSON.stringify({name, email, message: description, adress, cart: cart, total: subtotal})
+                        })
+                        const res = await sendEmail.json()
+                        console.log(res)
+                        // await updateDb([], 'cart')
+                        // setCart([])
+                        // console.log('execuyto')
                     }
                 }}
                 btnDisable={modalBtnDisable}
@@ -58,6 +65,12 @@ export default function CartProperties() {
                         <label >
                             <span>Nome:</span>
                             <input className="w-full px-2 py-1 border rounded-md" type="text" name="name" onChange={(e) => setName(e.target.value)}/>
+                        </label>
+                    </div>
+                    <div>
+                        <label >
+                            <span>Email:</span>
+                            <input className="w-full px-2 py-1 border rounded-md" type="text" name="email" onChange={(e) => setEmail(e.target.value)}/>
                         </label>
                     </div>
                     <div>
