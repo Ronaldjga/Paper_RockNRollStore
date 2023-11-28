@@ -5,15 +5,17 @@ import { EmblaCarouselType } from "embla-carousel-react"
 import Image from "next/image"
 import Autoplay from 'embla-carousel-autoplay'
 
-import imageOne from '~/img/gunsNRosesShirt.png'
-import imageTwo from '~/img/slipknotShirt.png'
-import imageThree from '~/img/ledZeppelinShirt.png'
+import bannerOneSm from '~/img/sleeptokenBannerSm.png'
+import bannerOneMd from '~/img/sleeptokenBannerMd.png'
+import bannerTwoSm from '~/img/pearljamBannerSm.png'
+import bannerTwoMd from '~/img/pearljamBannerMd.png'
+import bannerThreeSm from '~/img/ledzeppelinBannerSm.png'
+import bannerThreeMd from '~/img/ledzeppelinBannerMd.png'
 import { useCallback, useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
-import plugin from "tailwindcss"
 
 export function Carousel() {
-    const [ emblaRef, emblaApi ] = useEmblaCarousel({loop: true}, [Autoplay({stopOnInteraction: false})])
+    const [ emblaRef, emblaApi ] = useEmblaCarousel({loop: true})
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
@@ -43,16 +45,31 @@ export function Carousel() {
       console.log(selectedIndex)
     return(
         <>
-            <div className="embla overflow-hidden w-full h-[300px]" ref={emblaRef}>
-                <div className="embla__container flex h-full">
-                    <div className="embla__slide relative w-full h-full min-w-full">
-                        <Image src={imageOne} alt="banner carousel" fill/>
+            <div className="embla overflow-hidden container md:max-w-0 md:min-w-full w-full h-[500px] rounded-md" ref={emblaRef}>
+                <div className="embla__container flex w-full h-full">
+                    <div className="embla__slide relative w-full h-full min-w-full overflow-hidden">
+                        <div className="w-full h-full md:hidden">
+                            <Image className="object-cover" src={bannerOneSm} alt="banner carousel" fill/>
+                        </div>
+                        <div className="w-full h-full hidden md:block">
+                            <Image className="bg-cover" src={bannerOneMd} alt="banner carousel" fill/>
+                        </div>
                     </div>
-                    <div className="embla__slide relative  w-full h-full min-w-full">
-                        <Image src={imageTwo} alt="banner carousel" fill/>
+                    <div className="embla__slide relative w-full h-full min-w-full overflow-hidden">
+                        <div className="w-full h-full md:hidden">
+                            <Image className="object-cover" src={bannerTwoSm} alt="banner carousel" fill/>
+                        </div>
+                        <div className="w-full h-full hidden md:block">
+                            <Image className="bg-cover" src={bannerTwoMd} alt="banner carousel" fill/>
+                        </div>
                     </div>
-                    <div className="embla__slide relative  w-full h-full min-w-full">
-                        <Image src={imageThree} alt="banner carousel" fill/>
+                    <div className="embla__slide relative w-full h-full min-w-full overflow-hidden">
+                        <div className="w-full h-full md:hidden">
+                            <Image className="object-cover" src={bannerThreeSm} alt="banner carousel" fill/>
+                        </div>
+                        <div className="w-full h-full hidden md:block">
+                            <Image className="bg-cover" src={bannerThreeMd} alt="banner carousel" fill/>
+                        </div>
                     </div>
                 </div>
             </div>

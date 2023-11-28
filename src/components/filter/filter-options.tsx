@@ -2,14 +2,16 @@
 
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 interface OptionsFilter {
     list: string[];
     searchParams: string | string[];
-    filter: string
+    filter: string,
+    className?: string
 }
 
-export default function FilterOptions({ list , searchParams, filter}: OptionsFilter) {
+export default function FilterOptions({ list , searchParams, filter, className}: OptionsFilter) {
     const router = useRouter()
     const myParams = useSearchParams()
 
@@ -23,7 +25,7 @@ export default function FilterOptions({ list , searchParams, filter}: OptionsFil
     }
 
     return (
-        <details className="w-full h-12 cursor-pointer relative bg-project-tertiary-500 rounded-lg text-project-secondary-500">
+        <details className={twMerge('w-full h-12 cursor-pointer relative bg-project-tertiary-500 rounded-lg text-project-secondary-500', className)}>
             <summary className="w-full h-full px-5 flex items-center justify-between flex-wrap">
                 <div>
                     <h3 className='inline-block font-semibold'>{filter}</h3>

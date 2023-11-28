@@ -4,9 +4,10 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import searchIcon from '~/img/search.svg'
 
-export default function FilterSearch() {
+export default function FilterSearch({className} : {className?: string}) {
     const [searchProduct, setSearchProduct] = useState<string>('')
     const router = useRouter()
     const myParams = useSearchParams()
@@ -21,7 +22,7 @@ export default function FilterSearch() {
     }
 
     return (
-        <label className='w-full h-12 pr-5 bg-project-tertiary-500 rounded-lg flex justify-between gap-1'>
+        <label className={twMerge('w-full h-12 pr-5 bg-project-tertiary-500 rounded-lg flex justify-between gap-1', className)}>
             <input
                 name='searchBanda'
                 className='w-full h-full bg-transparent p-5'

@@ -3,10 +3,11 @@
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { twMerge } from "tailwind-merge";
 
 const priceRegex = /^\d+(?:,\d+)*\.?\d*$/;
 
-export default function FilterMinMax() {
+export default function FilterMinMax({className} : {className?: string}) {
     const [minValue, setMinValue] = useState<string>('')
     const [maxValue, setMaxValue] = useState<string>('')
 
@@ -35,7 +36,7 @@ export default function FilterMinMax() {
 
     return (
         <form
-            className="w-full flex gap-5 justify-center items-center"
+            className={twMerge('w-full flex gap-5 justify-center items-center', className)}
             onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     updateUrlParams();
@@ -65,7 +66,7 @@ function InputPrice({ change, name, value }: { change: (e: React.ChangeEvent<HTM
         <input
             type="text"
             name={name}
-            className="w-auto min-w-0 px-4 py-2 rounded-md bg-project-tertiary-500"
+            className="w-full min-w-0 px-4 py-2 rounded-md bg-project-tertiary-500"
             placeholder={name}
             onChange={change}
             value={value}

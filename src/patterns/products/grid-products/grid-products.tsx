@@ -57,11 +57,11 @@ export async function GridProducts({type = "storage", filter}: IGridProducts) {
     const withFilter = filter ? filteredProducts : products
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+        <div className="container mx-auto grid max-[350px]:grid-cols-1 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 place-items-center">
             {
                 withFilter.map((data, index) => {
                 return(
-                    <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center">
+                    <Product.Root key={index} className="bg-project-tertiary-400 border-b-8 border-project-primary-500 rounded-t-md gap-5 flex flex-col items-center w-full max-w-[250px]">
                         <Link className="h-[225px] w-full" href={`/products/shirts/${data.id}`} scroll={false}>
                             <Product.Image
                                 rootClassName="w-full h-full "
