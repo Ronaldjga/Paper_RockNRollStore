@@ -1,10 +1,8 @@
-import { NextResponse } from 'next/server';
 import { SUPABASE } from './../../../../../utils/supabase';
 import { authOptions } from './../../auth/[...nextauth]/route';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 
-export async function POST(res: NextResponse) {
+export async function POST(res: Request) {
     const session = await getServerSession(authOptions);
     const supabaseAccessToken: string = session?.supabaseAccessToken ?? ''
     const body = await res.json()
@@ -19,7 +17,7 @@ export async function POST(res: NextResponse) {
     }
 }
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: Request, res: Response) {
     const session = await getServerSession(authOptions);
     const supabaseAccessToken: string = session?.supabaseAccessToken ?? ''
     if(supabaseAccessToken) {
