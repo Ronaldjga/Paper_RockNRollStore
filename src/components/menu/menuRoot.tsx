@@ -13,7 +13,13 @@ export default function MenuRoot({children}: IMenuRoot) {
     const [ isOpen, setIsOpen ] = useState<boolean>(false)
     const menuIcon = isOpen === false ? menuIconOpen : menuIconClose
 
-    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState<number>(() => {
+        if (typeof window === "undefined"){
+            return 0
+        } else {
+            return window.innerWidth
+        }
+    });
 
     const handleResize = useCallback(() => {
         setWindowWidth(window.innerWidth);
@@ -23,6 +29,9 @@ export default function MenuRoot({children}: IMenuRoot) {
     }, []);
 
     useEffect(() => {
+        if (typeof window === "undefined"){
+            
+        }
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
