@@ -19,9 +19,9 @@ export const metadata = {
 export default function RootLayout(props:any) {
   const menuLinks = [
     {link: '/', title: 'Inicio'},
-    {link: '/products', title: 'Produtos'},
-    {link: '/sobre', title: 'Sobre'},
-    {link: '/reportar', title: 'Reportar'}
+    {link: '/', title: 'Produtos'},
+    {link: '/', title: 'Sobre'},
+    {link: '/', title: 'Reportar'}
   ]
 
   return (
@@ -31,13 +31,13 @@ export default function RootLayout(props:any) {
           <DataProductsProvider>
             <NotificationsProvider>
               <Menu.Root>
-                <div className='w-full flex justify-between items-center  pr-5 sm:order-2 sm:justify-end sm:gap-2'>
+                <div className='w-full flex justify-between items-center pr-5'>
                   {/* @ts-expect-error */}
-                  <SessionAccount className={`sm:w-7 sm:h-7`}/>
-                  <Menu.Icon className='order-3 sm:w-6 sm:h-6' icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
-                  <Menu.Icon className='sm:w-6 sm:h-6' icon={wishlistICon} alt='Lista de desejos' link='/wishlist'/>
+                  <SessionAccount/>
+                  <Menu.Icon icon={backpackIcon} alt='Carrinho de compras' link='/cart'/>
+                  <Menu.Icon icon={wishlistICon} alt='Lista de desejos' link='/wishlist'/>
                 </div>
-                <Menu.Links className='sm:order-1 sm:flex-row sm:items-center' links={menuLinks}/>
+                <Menu.Links links={menuLinks}/>
               </Menu.Root>
               <Notifications/>
               {props.children}

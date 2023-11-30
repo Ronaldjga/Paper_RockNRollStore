@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import AccountActions from './accountActions'
 
-export default async function SessionAccount({className} : {className: string}) {
+export default async function SessionAccount() {
     const session: any = await getServerSession<any>(authOptions)
     // console.log(session, 'console no sessionAccount')
     return (
@@ -10,9 +10,9 @@ export default async function SessionAccount({className} : {className: string}) 
             {
             session 
             ? (
-                <AccountActions className={className} action={true} icon={session.user.image}/>
+                <AccountActions action={true} icon={session.user.image}/>
             ) 
-            : (<AccountActions className={className} action={false}/>)
+            : (<AccountActions action={false}/>)
             }
         </>
     )
