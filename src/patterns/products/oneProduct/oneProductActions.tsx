@@ -31,8 +31,8 @@ const oneProductActionsStyle = tv({
     type: {
       page: {},
       modal: {
-        inputsRadioStyle: 'min-w-[30px] w-[30px] min-h-[30px] h-[30px] flex justify-center items-center text-[0.8rem]',
-        countStyle: 'w-8 h-6 text-sm',
+        inputsRadioStyle: 'min-w-[30px] w-[30px] min-h-[30px] h-[30px] flex justify-center items-center text-[0.8rem] md:min-w-0 md:min-h-0 md:w-[45px] md:h-[45px]',
+        countStyle: 'w-8 h-6 text-sm md:w-[45px] md:h-[45px]',
         bigText: 'text-lg',
         mediumText: 'text-sm mb-0',
         propertieContainer: ''

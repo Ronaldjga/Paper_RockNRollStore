@@ -10,10 +10,10 @@ import { getServerSession } from "next-auth";
 
 const oneProductStyles = tv({
   slots: {
-    base: "w-full h-full rounded-md min-h-screen overflow-y-auto",
-    productRoot: 'p-0 bg-project-tertiary-300 border-project-primary-500',
-    imageContainer: "w-full h-[300px] max-h-2/4",
-    productContent: "w-full h-full flex-1 p-2 py-4 border-t-4 border-project-secondary-500 bg-project-secondary-700 flex flex-col flex-wrap justify-between gap-5 !text-project-tertiary-500",
+    base: "w-full h-screen rounded-md min-h-screen overflow-y-auto md:w-11/12 md:h-fit md:flex md:items-center md:justify-center",
+    productRoot: 'h-full p-0 bg-project-tertiary-300 border-project-primary-500 md:flex md:flex-row md:w-full',
+    imageContainer: "w-full h-[300px] max-h-2/4 md:w-2/4 md:max-w-[500px]",
+    productContent: "w-full h-full flex-1 p-2 py-4 border-t-4 border-project-secondary-500 bg-project-secondary-700 flex flex-col flex-wrap justify-between gap-5 !text-project-tertiary-500 md:pt-10 md:px-5",
     smallTexts: "font-medium text-[0.9rem]",
     bigText: "font-bold text-[1.5rem]"
   },
@@ -21,8 +21,8 @@ const oneProductStyles = tv({
     type: {
       page: "",
       modal: {
-        base: 'w-full min-h-0 max-h-[95vh]',
-        imageContainer: 'min-h-[200px]',
+        base: 'w-full min-h-0 max-h-[95vh] md:h-full lg:max-w-4xl',
+        imageContainer: 'min-h-[200px] h-full',
         productContent: 'py-2 gap-2',
         productRoot: 'h-full'
       }
